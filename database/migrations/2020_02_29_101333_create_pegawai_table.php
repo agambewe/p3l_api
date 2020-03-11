@@ -20,7 +20,7 @@ class CreatePegawaiTable extends Migration
             $table->text('alamat');
             $table->date('tanggal_lahir');
             $table->string('telepon', 15);
-            $table->integer('role');
+            $table->string('role');
             $table->string('password', 500);
             // $table->rememberToken();
             $table->timestamps();

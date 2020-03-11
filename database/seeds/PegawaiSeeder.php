@@ -24,9 +24,9 @@ class PegawaiSeeder extends Seeder
                     'tanggal_lahir' => $faker->date($format = 'Y-m-d', $max = 'now'),
                     'telepon' => $faker->e164PhoneNumber,
                     // 'role' => $faker->randomElement($array = array ('CS', 'KASIR')),
-                    'role' => $faker->randomElement($array = array (1, 2)),
+                    'role' => $faker->randomElement($array = array ('CS', 'KASIR')),
                     // 'password' => Hash::make($faker->password),
-                    'password' => Hash::make('password'),
+                    'password' => bcrypt('password'),
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
             ]);

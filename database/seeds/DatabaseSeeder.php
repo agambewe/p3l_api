@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             DetailTransaksiLayananSeeder::class,
             DetailOrderRestockSeeder::class,
             OrderRestockSeeder::class,
-            TransaksiSeeder::class
+            TransaksiSeeder::class,
+            UsersTableSeeder::class
         ]);
     }
 }
