@@ -16,7 +16,7 @@ class Pegawai extends Model
     protected $primaryKey = "id";
     
     protected $hidden = [
-        'password', 
+        // 'password', 
         // 'remember_token',
     ];
 
