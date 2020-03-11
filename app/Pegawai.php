@@ -22,4 +22,9 @@ class Pegawai extends Model
 
     use SoftDeletes;
     protected $dates =['deleted_at'];
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 }

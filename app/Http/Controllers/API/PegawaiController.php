@@ -37,7 +37,7 @@ class PegawaiController extends Controller
         $data->tanggal_lahir = $tanggal_lahir;
         $data->telepon = $telepon;
         $data->role = $role;
-        $data->password = Hash::make($password);
+        $data->password = bcrypt($password);
 
         if($data->save()){
             $res['message'] = "Data pegawai berhasil dimasukkan!";
@@ -63,7 +63,7 @@ class PegawaiController extends Controller
         $data->tanggal_lahir = $tanggal_lahir;
         $data->telepon = $telepon;
         $data->role = $role;
-        $data->password = $password;
+        $data->password = bcrypt($password);
 
         if($data->save()){
             $res['message'] = "Data pegawai berhasil diubah!";
