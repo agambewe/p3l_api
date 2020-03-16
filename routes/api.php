@@ -17,10 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', 'Auth\LoginController@login');
+// Route::post('/login', 'Auth\LoginController@login');
+Route::post('/login', 'API\PegawaiController@login');
 
 //pegawai
 Route::get('/pegawai', 'API\PegawaiController@tampil');
+Route::get('/pegawai/terhapus', 'API\PegawaiController@sampah');
 Route::post('/pegawai', 'API\PegawaiController@tambah');
 Route::post('/pegawai/{id}', 'API\PegawaiController@ubah');
 Route::delete('/pegawai/{id}', 'API\PegawaiController@hapus');

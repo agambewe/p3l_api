@@ -5,26 +5,58 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
+use Hash;
 use App\Pegawai;
 
 class PegawaiController extends Controller
 {
+    public function login(Request $request)
+    {
+        $this->validateWith([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $username = $request->input('username');
+        $password = $request->input('password');
+
+        $users = Pegawai::where('username', $username)->get();
+        
+        if ($username === $users[0]['username'] && password_verify($password,  $users[0]['password'])) {
+            return response()->json([
+                'status' => 'success', 
+                'user' => $username,
+                'message' => 'sukses login'
+            ], 200);
+        }
+        else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'username password tidak cocok!'
+                ]);
+        }
+    }
     public function tampil(){
         return Pegawai::all();
+    }
+
+    public function sampah(){
+        return Pegawai::onlyTrashed()->get();
     }
 
     public function tambah(Request $request)
     {
         $this->validateWith([
             'nama' => 'required',
+            'username' => 'required',
             'alamat' => 'required',
             'tanggal_lahir' => 'required',
             'telepon' => 'required',
-            'role' => 'required',
-            'password' => 'required'
+            'role' => 'required'
         ]);
 
         $nama = $request->input('nama');
+        $username = $request->input('username');
         $alamat = $request->input('alamat');
         $tanggal_lahir = $request->input('tanggal_lahir');
         $telepon = $request->input('telepon');
@@ -33,6 +65,7 @@ class PegawaiController extends Controller
 
         $data = new Pegawai();
         $data->nama = $nama;
+        $data->username = $username;
         $data->alamat = $alamat;
         $data->tanggal_lahir = $tanggal_lahir;
         $data->telepon = $telepon;
@@ -51,6 +84,7 @@ class PegawaiController extends Controller
     public function ubah(Request $request, $id)
     {
         $nama = $request->input('nama');
+        $username = $request->input('username');
         $alamat = $request->input('alamat');
         $tanggal_lahir = $request->input('tanggal_lahir');
         $telepon = $request->input('telepon');
@@ -59,11 +93,15 @@ class PegawaiController extends Controller
 
         $data = Pegawai::where('id',$id)->first();
         $data->nama = $nama;
+        $data->username = $username;
         $data->alamat = $alamat;
         $data->tanggal_lahir = $tanggal_lahir;
         $data->telepon = $telepon;
         $data->role = $role;
-        $data->password = bcrypt($password);
+        if($password!=null){
+            $password = Hash::make($password);
+            $data->password = $password;
+        }
 
         if($data->save()){
             $res['message'] = "Data pegawai berhasil diubah!";

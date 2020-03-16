@@ -10,7 +10,7 @@ class Pegawai extends Model
     public $table = "pegawai";
 
     protected $fillable = [
-        'nama', 'alamat', 'tanggal_lahir', 'telepon', 'role', 'password',
+        'nama', 'username', 'alamat', 'tanggal_lahir', 'telepon', 'role', 'password',
     ];
 
     protected $primaryKey = "id";
@@ -23,8 +23,8 @@ class Pegawai extends Model
     use SoftDeletes;
     protected $dates =['deleted_at'];
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
+    // public function setPasswordAttribute($value)
+    // {
+    //     $this->attributes['password'] = bcrypt($value);
+    // }
 }
