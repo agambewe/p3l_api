@@ -29,7 +29,10 @@ class ProdukController extends Controller
         $stok = $request->input('stok');
         $minimal = $request->input('minimal');
         $harga = $request->input('harga');
-        // $foto = $request->input('foto');
+        $foto = $request->file('foto');
+            $nama_file = time()."_".$foto->getClientOriginalName();
+            $tujuan_upload = 'uploads';
+            $foto->move($tujuan_upload,$nama_file);
 
         $data = new Produk();
         $data->nama = $nama;
@@ -37,7 +40,7 @@ class ProdukController extends Controller
         $data->stok = $stok;
         $data->minimal = $minimal;
         $data->harga = $harga;
-        // $data->foto = $foto;
+        $data->foto = $nama_file;
 
         if($data->save()){
             $res['message'] = "Data produk berhasil dimasukkan!";
