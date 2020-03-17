@@ -26,7 +26,7 @@ class PegawaiSeeder extends Seeder
                     // 'role' => $faker->randomElement($array = array ('CS', 'KASIR')),
                     'role' => $faker->randomElement($array = array ('CS', 'KASIR')),
                     // 'password' => Hash::make($faker->password),
-                    'password' => bcrypt('password'),
+                    'password' => Hash::make('password'),
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
             ]);

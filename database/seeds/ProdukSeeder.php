@@ -23,7 +23,7 @@ class ProdukSeeder extends Seeder
                     'stok' => $faker->numberBetween(7,20),
                     'minimal' => 5,
                     'harga' => $faker->randomElement($array = array (350000, 400000, 500000)),
-                    'foto' => '/img/default.jpg',
+                    'foto' => 'default.png',
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
             ]);

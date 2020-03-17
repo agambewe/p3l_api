@@ -21,7 +21,7 @@ class ProdukController extends Controller
             'stok' => 'required',
             'minimal' => 'required',
             'harga' => 'required',
-            // 'foto' => 'required'
+            'foto' => 'required'
         ]);
 
         $nama = $request->input('nama');
@@ -58,6 +58,12 @@ class ProdukController extends Controller
         $stok = $request->input('stok');
         $minimal = $request->input('minimal');
         $harga = $request->input('harga');
+        $foto = $request->file('foto');
+        if($foto!=NULL){
+            $nama_file = time()."_".$foto->getClientOriginalName();
+            $tujuan_upload = 'uploads';
+            $foto->move($tujuan_upload,$nama_file);
+        }
 
         $data = Produk::where('id',$id)->first();
         $data->nama = $nama;
@@ -65,6 +71,9 @@ class ProdukController extends Controller
         $data->stok = $stok;
         $data->minimal = $minimal;
         $data->harga = $harga;
+        if($foto!=NULL){
+            $data->foto = $nama_file;
+        }
 
         if($data->save()){
             $res['message'] = "Data produk berhasil diubah!";
