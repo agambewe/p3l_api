@@ -17,7 +17,7 @@ class CustomerSeeder extends Seeder
         for($i = 1; $i <= 5; $i++):
             DB::table('customer')
                 ->insert([
-                    'id_pegawai' => $i,
+                    // 'id_pegawai' => $i,
                     'nama' => $faker->name,
                     'alamat' => $faker->address,
                     'tanggal_lahir' => $faker->date($format = 'Y-m-d', $max = 'now'),

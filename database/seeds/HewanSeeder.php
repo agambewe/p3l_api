@@ -19,7 +19,7 @@ class HewanSeeder extends Seeder
                 ->insert([
                     'id_customer' => $i,
                     'id_jenis' => $i,
-                    'id_pegawai' => $i,
+                    // 'id_pegawai' => $i,
                     'nama' => $faker->name,
                     'tanggal_lahir' => $faker->date($format = 'Y-m-d', $max = 'now'),
                     'created_by' => "cs dummy",

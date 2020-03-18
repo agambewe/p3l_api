@@ -15,10 +15,6 @@ class CreateCustomerTable extends Migration
     {
         Schema::create('customer', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('id_pegawai');
-            $table->foreign('id_pegawai')
-                ->references('id')
-                ->on('pegawai');
             $table->string('nama', 100);
             $table->text('alamat');
             $table->date('tanggal_lahir');

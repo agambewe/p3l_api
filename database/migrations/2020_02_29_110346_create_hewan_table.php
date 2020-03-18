@@ -23,10 +23,6 @@ class CreateHewanTable extends Migration
             $table->foreign('id_jenis')
                 ->references('id')
                 ->on('jenis_hewan');
-            $table->unsignedInteger('id_pegawai');
-            $table->foreign('id_pegawai')
-                ->references('id')
-                ->on('pegawai');
             $table->string('nama', 100);
             $table->date('tanggal_lahir');
             $table->string('created_by', 100);

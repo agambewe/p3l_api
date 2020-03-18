@@ -16,15 +16,17 @@ class LayananController extends Controller
     public function tambah(Request $request)
     {
         $this->validateWith([
+            'id_ukuran' => 'required',
             'nama' => 'required',
             'harga' => 'required',
-            // 'foto' => 'required'
         ]);
 
+        $id_ukuran = $request->input('id_ukuran');
         $nama = $request->input('nama');
         $harga = $request->input('harga');
 
         $data = new Layanan();
+        $data->id_ukuran = $id_ukuran;
         $data->nama = $nama;
         $data->harga = $harga;
 
@@ -39,10 +41,12 @@ class LayananController extends Controller
 
     public function ubah(Request $request, $id)
     {
+        $id_ukuran = $request->input('id_ukuran');
         $nama = $request->input('nama');
         $harga = $request->input('harga');
 
         $data = Layanan::where('id',$id)->first();
+        $data->id_ukuran = $id_ukuran;
         $data->nama = $nama;
         $data->harga = $harga;
 
