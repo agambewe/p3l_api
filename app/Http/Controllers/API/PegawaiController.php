@@ -20,9 +20,14 @@ class PegawaiController extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
 
-        $users = Pegawai::where('username', $username)->get();
-        
-        if ($username === $users[0]['username'] && password_verify($password,  $users[0]['password'])) {
+        $users = Pegawai::where('username',$username)->first();
+        if(!$users){
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'username tidak terdaftar!'
+            ]);
+        }
+        if ($username === $users->username && Hash::check($password,  $users->password)) {
             return response()->json([
                 'status' => 'success', 
                 'user' => $username,

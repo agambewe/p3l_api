@@ -15,7 +15,7 @@ class CreateUkuranHewanTable extends Migration
     {
         Schema::create('ukuran_hewan', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama', 100);
+            $table->string('nama', 100)->unique();
             // $table->date('deleted_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
