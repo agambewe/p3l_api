@@ -27,6 +27,7 @@ Route::post('/pegawai', 'API\PegawaiController@tambah');
 Route::post('/pegawai/{id}', 'API\PegawaiController@ubah');
 Route::delete('/pegawai/{id}', 'API\PegawaiController@hapus');
 Route::get('/pegawai/{id}', 'API\PegawaiController@cari');
+Route::get('/pegawai/user/{username}', 'API\PegawaiController@cariUser');
 
 //customer
 Route::get('/customer', 'API\CustomerController@tampil');

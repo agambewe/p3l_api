@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Supplier extends Model
 {
-    public $table = "pegawai";
+    public $table = "supplier";
 
     protected $fillable = [
         'nama', 'alamat', 'telepon',

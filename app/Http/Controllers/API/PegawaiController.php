@@ -144,4 +144,17 @@ class PegawaiController extends Controller
             return response($data);
         }
     }
+
+    public function cariUser($username){
+        $data = Pegawai::where('username',$username)->first();
+
+        if (is_null($data)){
+            $res['message'] = "Data pegawai tidak ditemukan!";
+            return response($res);
+        }else{
+            $res['message'] = "Data pegawai ditemukan!";
+            $res['value'] = "$data";
+            return response($data);
+        }
+    }
 }
