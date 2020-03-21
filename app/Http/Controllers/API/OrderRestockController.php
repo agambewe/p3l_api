@@ -10,7 +10,7 @@ use App\OrderRestock;
 class OrderRestockController extends Controller
 {
     public function tampil(){
-        return OrderRestock::all();
+        return OrderRestock::orderBy('status_order', 'asc')->get();
     }
 
     public function tambah(Request $request)
@@ -42,14 +42,8 @@ class OrderRestockController extends Controller
 
     public function ubah(Request $request, $id)
     {
-        $tanggal_restock = $request->input('tanggal_restock');
-        $total_bayar = $request->input('total_bayar');
-        $status_order = $request->input('status_order');
-
         $data = OrderRestock::where('id',$id)->first();
-        $data->tanggal_restock = $tanggal_restock;
-        $data->total_bayar = $total_bayar;
-        $data->status_order = $status_order;
+        $data->status_order = 1;
 
         if($data->save()){
             $res['message'] = "berhasil diubah!";

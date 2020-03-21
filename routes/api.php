@@ -83,6 +83,13 @@ Route::post('/jenis-hewan/{id}', 'API\JenisHewanController@ubah');
 Route::delete('/jenis-hewan/{id}', 'API\JenisHewanController@hapus');
 Route::get('/jenis-hewan/{id}', 'API\JenisHewanController@cari');
 
+//order restock
+Route::get('/order-restock', 'API\OrderRestockController@tampil');
+Route::post('/order-restock', 'API\OrderRestockController@tambah');
+Route::post('/order-restock/{id}', 'API\OrderRestockController@ubah');
+Route::delete('/order-restock/{id}', 'API\OrderRestockController@hapus');
+Route::get('/order-restock/{id}', 'API\OrderRestockController@cari');
+
 //detail transaksi produk
 Route::get('/detail-transaksi-produk', 'API\DetailTransaksiProdukController@tampil');
 Route::post('/detail-transaksi-produk', 'API\DetailTransaksiProdukController@tambah');
