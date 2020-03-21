@@ -31,5 +31,19 @@ class PegawaiSeeder extends Seeder
                     'updated_at' => date("Y-m-d H:i:s")
             ]);
         }
+        DB::table('pegawai')
+            ->insert([
+                'nama' => "Agam Bagaswanda",
+                'username' => "agambewe",
+                'alamat' => "Miami Beach, Florida ",
+                'tanggal_lahir' => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'telepon' => $faker->e164PhoneNumber,
+                // 'role' => $faker->randomElement($array = array ('CS', 'KASIR')),
+                'role' => "OWNER",
+                // 'password' => Hash::make($faker->password),
+                'password' => Hash::make('password'),
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+        ]);
     }
 }

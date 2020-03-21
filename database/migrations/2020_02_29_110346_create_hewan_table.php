@@ -26,7 +26,7 @@ class CreateHewanTable extends Migration
             $table->string('nama', 100);
             $table->date('tanggal_lahir');
             $table->string('created_by', 100);
-            $table->string('updated_by', 100);
+            $table->string('updated_by', 100)->nullable();
             $table->string('deleted_by', 100)->nullable();
             $table->timestamps();
             $table->softDeletes();

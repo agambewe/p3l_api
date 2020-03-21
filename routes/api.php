@@ -30,10 +30,22 @@ Route::get('/pegawai/{id}', 'API\PegawaiController@cari');
 
 //customer
 Route::get('/customer', 'API\CustomerController@tampil');
+Route::get('/customer/terhapus', 'API\CustomerController@sampah');
 Route::post('/customer', 'API\CustomerController@tambah');
 Route::post('/customer/{id}', 'API\CustomerController@ubah');
 Route::delete('/customer/{id}', 'API\CustomerController@hapus');
+Route::post('/customer/by/{id}', 'API\CustomerController@hapusby');
 Route::get('/customer/{id}', 'API\CustomerController@cari');
+// Route::get('/customer/nama/{nama}', 'API\CustomerController@cariUser');
+
+//hewan
+Route::get('/hewan', 'API\HewanController@tampil');
+Route::get('/hewan/terhapus', 'API\HewanController@sampah');
+Route::post('/hewan', 'API\HewanController@tambah');
+Route::post('/hewan/{id}', 'API\HewanController@ubah');
+Route::delete('/hewan/{id}', 'API\HewanController@hapus');
+Route::post('/hewan/by/{id}', 'API\HewanController@hapusby');
+Route::get('/hewan/{id}', 'API\HewanController@cari');
 
 //supplier
 Route::get('/supplier', 'API\SupplierController@tampil');

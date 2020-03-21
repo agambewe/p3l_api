@@ -30,7 +30,8 @@ class PegawaiController extends Controller
         if ($username === $users->username && Hash::check($password,  $users->password)) {
             return response()->json([
                 'status' => 'success', 
-                'user' => $username,
+                'user' => $users->username,
+                'role' => $users->role,
                 'message' => 'sukses login'
             ], 200);
         }

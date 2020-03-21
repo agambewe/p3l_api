@@ -13,27 +13,32 @@ class HewanController extends Controller
         return Hewan::all();
     }
 
+    public function sampah(){
+        return Hewan::onlyTrashed()->get();
+    }
+
     public function tambah(Request $request)
     {
         $this->validateWith([
+            'id_customer' => 'required',
+            'id_jenis' => 'required',
             'nama' => 'required',
             'tanggal_lahir' => 'required',
             'created_by' => 'required',
-            'updated_by' => 'required',
         ]);
 
+        $id_customer = $request->input('id_customer');
+        $id_jenis = $request->input('id_jenis');
         $nama = $request->input('nama');
         $tanggal_lahir = $request->input('tanggal_lahir');
         $created_by = $request->input('created_by');
-        $updated_by = $request->input('updated_by');
-        // $deleted_by = $request->input('deleted_by');
 
         $data = new Hewan();
+        $data->id_customer = $id_customer;
+        $data->id_jenis = $id_jenis;
         $data->nama = $nama;
         $data->tanggal_lahir = $tanggal_lahir;
         $data->created_by = $created_by;
-        $data->updated_by = $updated_by;
-        // $data->deleted_by = $deleted_by;
 
         if($data->save()){
             $res['message'] = "Data hewan berhasil dimasukkan!";
@@ -46,11 +51,15 @@ class HewanController extends Controller
 
     public function ubah(Request $request, $id)
     {
+        $id_customer = $request->input('id_customer');
+        $id_jenis = $request->input('id_jenis');
         $nama = $request->input('nama');
         $tanggal_lahir = $request->input('tanggal_lahir');
         $updated_by = $request->input('updated_by');
 
         $data = Hewan::where('id',$id)->first();
+        $data->id_customer = $id_customer;
+        $data->id_jenis = $id_jenis;
         $data->nama = $nama;
         $data->tanggal_lahir = $tanggal_lahir;
         $data->updated_by = $updated_by;
@@ -60,6 +69,22 @@ class HewanController extends Controller
             return response($res);
         }else{
             $res['message'] = "Data hewan gagal diubah!";
+            return response($res);
+        }
+    }
+
+    public function hapusby(Request $request, $id)
+    {
+        $deleted_by = $request->input('deleted_by');
+
+        $data = Hewan::onlyTrashed()->where('id',$id)->first();
+        $data->deleted_by = $deleted_by;
+
+        if($data->save()){
+            $res['message'] = "Data delete by berhasi!";
+            return response($res);
+        }else{
+            $res['message'] = "Data delete by gagal!";
             return response($res);
         }
     }

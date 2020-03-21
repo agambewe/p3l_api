@@ -13,6 +13,10 @@ class CustomerController extends Controller
         return Customer::all();
     }
 
+    public function sampah(){
+        return Customer::onlyTrashed()->get();
+    }
+
     public function tambah(Request $request)
     {
         $this->validateWith([
@@ -21,7 +25,6 @@ class CustomerController extends Controller
             'tanggal_lahir' => 'required',
             'telepon' => 'required',
             'created_by' => 'required',
-            'updated_by' => 'required',
         ]);
 
         $nama = $request->input('nama');
@@ -29,8 +32,6 @@ class CustomerController extends Controller
         $tanggal_lahir = $request->input('tanggal_lahir');
         $telepon = $request->input('telepon');
         $created_by = $request->input('created_by');
-        $updated_by = $request->input('updated_by');
-        // $deleted_by = $request->input('deleted_by');
 
         $data = new Customer();
         $data->nama = $nama;
@@ -38,8 +39,6 @@ class CustomerController extends Controller
         $data->tanggal_lahir = $tanggal_lahir;
         $data->telepon = $telepon;
         $data->created_by = $created_by;
-        $data->updated_by = $updated_by;
-        // $data->deleted_by = $deleted_by;
 
         if($data->save()){
             $res['message'] = "Data customer berhasil dimasukkan!";
@@ -74,6 +73,22 @@ class CustomerController extends Controller
         }
     }
 
+    public function hapusby(Request $request, $id)
+    {
+        $deleted_by = $request->input('deleted_by');
+
+        $data = Customer::onlyTrashed()->where('id',$id)->first();
+        $data->deleted_by = $deleted_by;
+
+        if($data->save()){
+            $res['message'] = "Data delete by berhasi!";
+            return response($res);
+        }else{
+            $res['message'] = "Data delete by gagal!";
+            return response($res);
+        }
+    }
+
     public function hapus($id)
     {
         $data = Customer::where('id',$id)->first();
@@ -87,6 +102,19 @@ class CustomerController extends Controller
             return response($res);
         }
     }
+
+    // public function cariUser($username){
+    //     $data = Customer::where('name', 'like', $username.'%')->first();
+
+    //     if (is_null($data)){
+    //         $res['message'] = "Data customer tidak ditemukan!";
+    //         return response($res);
+    //     }else{
+    //         $res['message'] = "Data customer ditemukan!";
+    //         $res['value'] = "$data";
+    //         return response($data);
+    //     }
+    // }
 
     public function cari($id){
         $data = Customer::find($id);

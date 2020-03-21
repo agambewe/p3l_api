@@ -20,7 +20,7 @@ class CreateCustomerTable extends Migration
             $table->date('tanggal_lahir');
             $table->string('telepon', 15);
             $table->string('created_by', 100);
-            $table->string('updated_by', 100);
+            $table->string('updated_by', 100)->nullable();
             $table->string('deleted_by', 100)->nullable();
             $table->timestamps();
             $table->softDeletes();
