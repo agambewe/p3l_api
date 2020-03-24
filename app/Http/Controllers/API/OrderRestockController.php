@@ -10,29 +10,45 @@ use App\OrderRestock;
 class OrderRestockController extends Controller
 {
     public function tampil(){
-        return OrderRestock::orderBy('status_order', 'asc')->get();
+        // return OrderRestock::orderBy('status_order', 'asc')->get();
+        return OrderRestock::all();
     }
 
     public function tambah(Request $request)
     {
 
         $this->validateWith([
+            'id_po' => 'required',
+            'id_supplier' => 'required',
             'tanggal_restock' => 'required',
             'total_bayar' => 'required',
-            'status_order' => 'required',
         ]);
 
+        $id_po = $request->input('id_po');
+        $id_supplier = $request->input('id_supplier');
         $tanggal_restock = $request->input('tanggal_restock');
         $total_bayar = $request->input('total_bayar');
-        $status_order = $request->input('status_order');
+        $status_order = 0;
+        // $data = new OrderRestock();
+        // $data->id_po = $id_po;
+        // $data->id_supplier = $id_supplier;
+        // $data->tanggal_restock = $tanggal_restock;
+        // $data->total_bayar = $total_bayar;
+        // $data->status_order = $status_order;
 
-        $data = new OrderRestock();
-        $data->tanggal_restock = $tanggal_restock;
-        $data->total_bayar = $total_bayar;
-        $data->status_order = $status_order;
+        $id = DB::table('order_restock')->insertGetId(
+            [
+                'id_po' => $id_po, 
+                'id_supplier' => $id_supplier,
+                'tanggal_restock' => $tanggal_restock,
+                'total_bayar' => $total_bayar,
+                'status_order' => $status_order
+            ]
+        );
 
-        if($data->save()){
+        if(!empty($id)){
             $res['message'] = "Berhasil diproses!";
+            $res['id'] = $id;
             return response($res);
         }else{
             $res['message'] = "Gagal diproses!";
@@ -70,6 +86,19 @@ class OrderRestockController extends Controller
 
     public function cari($id){
         $data = OrderRestock::find($id);
+
+        if (is_null($data)){
+            $res['message'] = "Tidak ditemukan!";
+            return response($res);
+        }else{
+            $res['message'] = "Ditemukan!";
+            $res['value'] = "$data";
+            return response($data);
+        }
+    }
+
+    public function cariPo($idPo){
+        $data = OrderRestock::where('id_po',$idPo)->first();
 
         if (is_null($data)){
             $res['message'] = "Tidak ditemukan!";

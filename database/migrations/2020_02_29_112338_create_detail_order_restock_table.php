@@ -19,7 +19,10 @@ class CreateDetailOrderRestockTable extends Migration
             $table->foreign('id_produk')
                 ->references('id')
                 ->on('produk');
-            $table->string('id_order_restock');
+            $table->unsignedInteger('id_order_restock');
+            $table->foreign('id_order_restock')
+                ->references('id')
+                ->on('order_restock');
             $table->integer('jumlah');
             $table->decimal('subtotal', 18, 2);
             $table->timestamps();

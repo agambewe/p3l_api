@@ -89,6 +89,7 @@ Route::post('/order-restock', 'API\OrderRestockController@tambah');
 Route::post('/order-restock/{id}', 'API\OrderRestockController@ubah');
 Route::delete('/order-restock/{id}', 'API\OrderRestockController@hapus');
 Route::get('/order-restock/{id}', 'API\OrderRestockController@cari');
+Route::get('/order-restock/po/{idPo}', 'API\OrderRestockController@cariPo');
 
 //detail transaksi produk
 Route::get('/detail-transaksi-produk', 'API\DetailTransaksiProdukController@tampil');

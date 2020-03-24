@@ -17,7 +17,8 @@ class OrderRestockSeeder extends Seeder
         for($i = 1; $i <= 5; $i++):
             DB::table('order_restock')
                 ->insert([
-                    'id' => 'PO-2020-03-01-0'.$i,
+                    'id' => $i,
+                    'id_po' => 'PO-2020-03-01-0'.$i,
                     'id_supplier' => $i,
                     'tanggal_restock' => $faker->dateTimeBetween($startDate = '-30 years', $endDate = 'now'),
                     'total_bayar' => $faker->randomElement($array = array ("100000", "150000", "200000", "250000", "105000", "205000")),

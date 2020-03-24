@@ -10,24 +10,47 @@ use App\DetailOrderRestock;
 class DetailOrderRestockController extends Controller
 {
     public function tampil(){
-        return DetailOrderRestock::all();
+        // return DetailOrderRestock::all();
+        $query = DB::select('SELECT * from order_restock 
+                JOIN detail_order_restock ON order_restock.id = detail_order_restock.id_order_restock
+                ORDER BY order_restock.id_po DESC ');
+        return $query;
     }
 
     public function tambah(Request $request)
     {
         $this->validateWith([
+            'id_order_restock' => 'required',
+            'id_produk' => 'required',
             'jumlah' => 'required',
             'subtotal' => 'required'
         ]);
 
+        $id_order_restock = $request->input('id_order_restock');
+        $id_produk = $request->input('id_produk');
         $jumlah = $request->input('jumlah');
         $subtotal = $request->input('subtotal');
+        $total = 0;
 
-        $data = new DetailOrderRestock();
-        $data->jumlah = $jumlah;
-        $data->subtotal = $subtotal;
+        $count = count($id_produk);
+        for($i = 0; $i < $count; $i++){
+            $id = DB::table('detail_order_restock')->insertGetId(
+                [
+                    'id_order_restock' => $id_order_restock[$i], 
+                    'id_produk' => $id_produk[$i],
+                    'jumlah' => $jumlah[$i],
+                    'subtotal' => $subtotal[$i]
+                ]
+            );
+            $total = $total + $subtotal[$i];
+        }
 
-        if($data->save()){
+        //update TOTAL
+        DB::table('order_restock')
+            ->where('id', $id_order_restock[0])
+            ->update(['total_bayar' => $total]);
+
+        if(!empty($id)){
             $res['message'] = "berhasil dimasukkan!";
             return response($res);
         }else{
