@@ -44,7 +44,7 @@ Route::get('/hewan', 'API\HewanController@tampil');
 Route::get('/hewan/terhapus', 'API\HewanController@sampah');
 Route::post('/hewan', 'API\HewanController@tambah');
 Route::post('/hewan/{id}', 'API\HewanController@ubah');
-Route::delete('/hewan/{id}', 'API\HewanController@hapus');
+// Route::delete('/hewan/{id}', 'API\HewanController@hapus');
 Route::post('/hewan/by/{id}', 'API\HewanController@hapusby');
 Route::get('/hewan/{id}', 'API\HewanController@cari');
 

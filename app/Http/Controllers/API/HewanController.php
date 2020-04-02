@@ -76,25 +76,20 @@ class HewanController extends Controller
     public function hapusby(Request $request, $id)
     {
         $deleted_by = $request->input('deleted_by');
-
-        $data = Hewan::onlyTrashed()->where('id',$id)->first();
-        $data->deleted_by = $deleted_by;
-
-        if($data->save()){
-            $res['message'] = "Data delete by berhasi!";
-            return response($res);
-        }else{
-            $res['message'] = "Data delete by gagal!";
-            return response($res);
-        }
-    }
-
-    public function hapus($id)
-    {
         $data = Hewan::where('id',$id)->first();
 
         if($data->delete()){
             $res['message'] = "Data hewan berhasil dihapus!";
+                $data = Hewan::onlyTrashed()->where('id',$id)->first();
+                $data->deleted_by = $deleted_by;
+
+                if($data->save()){
+                    $res['message'] = "Data hewan berhasil dihapus!";
+                    return response($res);
+                }else{
+                    $res['message'] = "Data hewan gagal dihapus!";
+                    return response($res);
+                }
             return response($res);
         }
         else{
@@ -102,6 +97,20 @@ class HewanController extends Controller
             return response($res);
         }
     }
+
+    // public function hapus($id)
+    // {
+    //     $data = Hewan::where('id',$id)->first();
+
+    //     if($data->delete()){
+    //         $res['message'] = "Data hewan berhasil dihapus!";
+    //         return response($res);
+    //     }
+    //     else{
+    //         $res['message'] = "Data hewan gagal dihapus!";
+    //         return response($res);
+    //     }
+    // }
 
     public function cari($id){
         $data = Hewan::find($id);
