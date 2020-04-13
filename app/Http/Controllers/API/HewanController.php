@@ -39,6 +39,7 @@ class HewanController extends Controller
         $data->nama = $nama;
         $data->tanggal_lahir = $tanggal_lahir;
         $data->created_by = $created_by;
+        $data->updated_by = $created_by;
 
         if($data->save()){
             $res['message'] = "Data hewan berhasil dimasukkan!";
