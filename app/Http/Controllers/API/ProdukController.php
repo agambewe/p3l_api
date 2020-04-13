@@ -59,7 +59,7 @@ class ProdukController extends Controller
         $minimal = $request->input('minimal');
         $harga = $request->input('harga');
         $foto = $request->file('foto');
-        if($foto!=NULL){
+        if($foto!=null){
             $nama_file = time()."_".$foto->getClientOriginalName();
             $tujuan_upload = 'uploads';
             $foto->move($tujuan_upload,$nama_file);

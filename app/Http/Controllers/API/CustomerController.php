@@ -76,18 +76,43 @@ class CustomerController extends Controller
     public function hapusby(Request $request, $id)
     {
         $deleted_by = $request->input('deleted_by');
+        $data = Customer::where('id',$id)->first();
 
-        $data = Customer::onlyTrashed()->where('id',$id)->first();
-        $data->deleted_by = $deleted_by;
+        if($data->delete()){
+            $res['message'] = "Data customer berhasil dihapus!";
+                $data = Customer::onlyTrashed()->where('id',$id)->first();
+                $data->deleted_by = $deleted_by;
 
-        if($data->save()){
-            $res['message'] = "Data delete by berhasi!";
+                if($data->save()){
+                    $res['message'] = "Data customer berhasil dihapus!";
+                    return response($res);
+                }else{
+                    $res['message'] = "Data customer gagal dihapus!";
+                    return response($res);
+                }
             return response($res);
-        }else{
-            $res['message'] = "Data delete by gagal!";
+        }
+        else{
+            $res['message'] = "Data customer gagal dihapus!";
             return response($res);
         }
     }
+
+    // public function hapusby(Request $request, $id)
+    // {
+    //     $deleted_by = $request->input('deleted_by');
+
+    //     $data = Customer::onlyTrashed()->where('id',$id)->first();
+    //     $data->deleted_by = $deleted_by;
+
+    //     if($data->save()){
+    //         $res['message'] = "Data delete by berhasi!";
+    //         return response($res);
+    //     }else{
+    //         $res['message'] = "Data delete by gagal!";
+    //         return response($res);
+    //     }
+    // }
 
     public function hapus($id)
     {
