@@ -16,6 +16,7 @@ class TransaksiController extends Controller
     public function tlayananCS(){
         return Transaksi::whereNull('kasir')
                         ->where('status_layanan',0)
+                        ->orderBy('created_at', 'desc')
                         ->get();
     }
 
