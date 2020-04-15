@@ -86,7 +86,7 @@ class TransaksiController extends Controller
         $data->status_layanan = 1;
 
         if($data->save()){
-            $res['message'] = "berhasil diubah!";
+            $res['message'] = "berhasil dipindahkah kemenu kasir!";
             return response($res);
         }else{
             $res['message'] = "gagal diubah!";
