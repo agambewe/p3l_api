@@ -10,13 +10,13 @@ class OrderRestock extends Model
     public $table = "order_restock";
 
     protected $fillable = [
-        'tanggal_restock', 'total_bayar', 'status_order'
+        'id_po', 'tanggal_restock', 'total_bayar', 'status_order'
     ];
 
-    protected $primaryKey = "id";
+    // protected $primaryKey = "id";
     
-    protected $hidden = [
-    ];
+    // protected $hidden = [
+    // ];
 
     use SoftDeletes;
     protected $dates =['deleted_at'];

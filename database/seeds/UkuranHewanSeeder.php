@@ -14,7 +14,7 @@ class UkuranHewanSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        $namas = ['S', 'M', 'L', 'XL', 'XXL'];
+        $namas = ['Small', 'Medium', 'Large', 'ExtraLarge', 'ExtraSmall'];
         foreach($namas as $nama){
             DB::table('ukuran_hewan')
                 ->insert([

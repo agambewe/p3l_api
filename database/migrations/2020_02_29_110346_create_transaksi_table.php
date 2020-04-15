@@ -15,23 +15,12 @@ class CreateTransaksiTable extends Migration
     {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('id_hewan')->nullable();
-            $table->foreign('id_hewan')
-                ->references('id')
-                ->on('hewan');
-            $table->unsignedInteger('id_detail_transaksi_layanan')->nullable();
-            $table->foreign('id_detail_transaksi_layanan')
-                ->references('id')
-                ->on('detail_transaksi_layanan');
-            $table->unsignedInteger('id_detail_transaksi_produk')->nullable();
-            $table->foreign('id_detail_transaksi_produk')
-                ->references('id')
-                ->on('detail_transaksi_produk');
+            $table->string('id_transaksi')->unique();
             $table->string('cs', 100);
             $table->string('kasir', 100)->nullable();
             $table->decimal('total_harga', 18, 2)->nullable();
             $table->integer('status_bayar')->default(0);
-            $table->integer('status_layanan')->default(0);
+            $table->integer('status_layanan')->nullable();
             $table->decimal('diskon', 18, 2)->default(0);
             $table->date('tanggal_transaksi')->nullable();
             $table->timestamps();

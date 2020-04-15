@@ -20,11 +20,11 @@ class DatabaseSeeder extends Seeder
             SupplierSeeder::class,
             LayananSeeder::class,
             HewanSeeder::class,
+            TransaksiSeeder::class,
             DetailTransaksiProdukSeeder::class,
             DetailTransaksiLayananSeeder::class,
             OrderRestockSeeder::class,
             DetailOrderRestockSeeder::class,
-            TransaksiSeeder::class,
             // UsersTableSeeder::class
         ]);
     }

@@ -112,6 +112,19 @@ class HewanController extends Controller
     //         return response($res);
     //     }
     // }
+    
+    public function cariPunyaSiapa($id){
+        $data = Hewan::where('id_customer',$id)->get();
+
+        if (is_null($data)){
+            $res['message'] = "Data hewan tidak ditemukan!";
+            return response($res);
+        }else{
+            $res['message'] = "Data hewan ditemukan!";
+            $res['value'] = "$data";
+            return response($data);
+        }
+    }
 
     public function cari($id){
         $data = Hewan::find($id);

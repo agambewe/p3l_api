@@ -15,6 +15,7 @@ class CreateDetailTransaksiProdukTable extends Migration
     {
         Schema::create('detail_transaksi_produk', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('id_transaksi');
             $table->unsignedInteger('id_produk');
             $table->foreign('id_produk')
                 ->references('id')

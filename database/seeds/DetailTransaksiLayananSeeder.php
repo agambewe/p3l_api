@@ -14,12 +14,16 @@ class DetailTransaksiLayananSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        for($i = 1; $i <= 5; $i++)
-        {
+        $namas = [1, 2, 5];
+        $i=1;
+        $j=1;
+        foreach($namas as $nama){
             DB::table('detail_transaksi_layanan')
                 ->insert([
-                    'id_layanan' => $i,
-                    'jumlah' => $faker->numberBetween(1,12),
+                    'id_transaksi' => 'LY-200120-0'.$nama,
+                    'id_layanan' => $i++,
+                    'id_hewan' => $j++,
+                    // 'jumlah' => $faker->numberBetween(1,12),
                     'subtotal' => $faker->randomElement($array = array ("100000", "150000", "200000", "250000", "105000", "205000"))
             ]);
         }

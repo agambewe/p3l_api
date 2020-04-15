@@ -15,8 +15,9 @@ class TransaksiSeeder extends Seeder
         $faker = Faker::create('id_ID');
         DB::table('transaksi')
                 ->insert([
-                    'id_hewan'=>1, 
-                    'id_detail_transaksi_layanan'=>1,
+                    'id_transaksi' => 'LY-200120-01',
+                    'status_layanan' => 0,
+                    // 'id_hewan'=>1,
                     'cs'=> $faker->userName,
                     'kasir'=> $faker->userName,
                     'total_harga'=>$faker->randomElement($array = array ("100000", "150000", "200000", "250000", "105000", "205000")),
@@ -29,8 +30,9 @@ class TransaksiSeeder extends Seeder
             ]);
         DB::table('transaksi')
             ->insert([
-                'id_hewan'=>2, 
-                'id_detail_transaksi_layanan'=>2,
+                'id_transaksi' => 'LY-200120-02',
+                'status_layanan' => 0,
+                // 'id_hewan'=>2, 
                 'cs'=> $faker->userName,
                 // 'status_bayar'=>0,
                 'status_layanan'=>1,
@@ -41,7 +43,7 @@ class TransaksiSeeder extends Seeder
             ]);
         DB::table('transaksi')
             ->insert([
-                'id_detail_transaksi_produk'=>1,
+                'id_transaksi' => 'PR-200120-01',
                 'cs'=> $faker->userName,
                 // 'status_bayar'=>0,
                 'tanggal_transaksi'=>date("Y-m-d H:i:s"),
@@ -50,7 +52,7 @@ class TransaksiSeeder extends Seeder
             ]);
         DB::table('transaksi')
         ->insert([
-                'id_detail_transaksi_produk'=>2,
+                'id_transaksi' => 'PR-200120-02',
                 'cs'=> $faker->userName,
                 'kasir'=> $faker->userName,
                 'total_harga'=>$faker->randomElement($array = array ("100000", "150000", "200000", "250000", "105000", "205000")),
@@ -61,8 +63,9 @@ class TransaksiSeeder extends Seeder
             ]);
         DB::table('transaksi')
             ->insert([
-                'id_hewan'=>5, 
-                'id_detail_transaksi_layanan'=>4,
+                'id_transaksi' => 'LY-200120-03',
+                // 'id_hewan'=>5,
+                'status_layanan' => 0,
                 'cs'=> $faker->userName,
                 'tanggal_transaksi'=>date("Y-m-d H:i:s"),
                 'created_at' => date("Y-m-d H:i:s"),

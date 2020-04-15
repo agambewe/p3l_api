@@ -15,25 +15,44 @@ class DetailTransaksiLayananController extends Controller
 
     public function tambah(Request $request)
     {
+
         $this->validateWith([
-            'jumlah' => 'required',
+            'id_hewan' => 'required',
+            'id_layanan' => 'required',
             'subtotal' => 'required'
         ]);
 
-        $jumlah = $request->input('jumlah');
+        $id_transaksi = $request->input('id_transaksi');
+        $id_hewan = $request->input('id_hewan');
+        $id_layanan = $request->input('id_layanan');
         $subtotal = $request->input('subtotal');
 
-        $data = new DetailTransaksiLayanan();
-        $data->jumlah = $jumlah;
-        $data->subtotal = $subtotal;
+        $count = count($id_hewan);
+        for($i = 0; $i < $count; $i++){
 
-        if($data->save()){
-            $res['message'] = "berhasil dimasukkan!";
-            return response($res);
-        }else{
-            $res['message'] = "gagal dimasukkan!";
-            return response($res);
+            $data = new DetailTransaksiLayanan();
+            $data->id_transaksi = $id_transaksi;
+            $data->id_hewan = $id_hewan[$i];
+            $data->id_layanan = $id_layanan[$i];
+            $data->subtotal = $subtotal[$i];
+            if($data->save()){
+                $res['message'] = "berhasil dimasukkan!";
+                $res['id'] = $data->id;
+                // return response($res);
+            }else{
+                $res['message'] = "gagal dimasukkan!";
+                // return response($res);
+            }
         }
+
+        // if($data->save()){
+        //     $res['message'] = "berhasil dimasukkan!";
+        //     $res['id'] = $data->id;
+        //     return response($res);
+        // }else{
+        //     $res['message'] = "gagal dimasukkan!";
+        //     return response($res);
+        // }
     }
 
     public function ubah(Request $request, $id)
@@ -70,6 +89,19 @@ class DetailTransaksiLayananController extends Controller
 
     public function cari($id){
         $data = DetailTransaksiLayanan::find($id);
+
+        if (is_null($data)){
+            $res['message'] = "tidak ditemukan!";
+            return response($res);
+        }else{
+            $res['message'] = "ditemukan!";
+            $res['value'] = "$data";
+            return response($data);
+        }
+    }
+
+    public function cariTransaksi($id){
+        $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
 
         if (is_null($data)){
             $res['message'] = "tidak ditemukan!";

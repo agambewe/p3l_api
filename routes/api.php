@@ -46,6 +46,7 @@ Route::post('/hewan', 'API\HewanController@tambah');
 Route::post('/hewan/{id}', 'API\HewanController@ubah');
 // Route::delete('/hewan/{id}', 'API\HewanController@hapus');
 Route::post('/hewan/by/{id}', 'API\HewanController@hapusby');
+Route::get('/hewan/nya/{id}', 'API\HewanController@cariPunyaSiapa');
 Route::get('/hewan/{id}', 'API\HewanController@cari');
 
 //supplier
@@ -91,6 +92,16 @@ Route::delete('/order-restock/{id}', 'API\OrderRestockController@hapus');
 Route::get('/order-restock/{id}', 'API\OrderRestockController@cari');
 Route::get('/order-restock/po/{idPo}', 'API\OrderRestockController@cariPo');
 
+//transaksi layanan
+Route::get('/order-layanan', 'API\TransaksiController@tlayananCS');
+Route::get('/order-layanann', 'API\TransaksiController@idTransaksiMaker');
+Route::get('/bayar-layanan', 'API\TransaksiController@tlayananKasir');
+Route::post('/order-layanan', 'API\TransaksiController@tambah');
+Route::post('/order-layanan/{id}', 'API\TransaksiController@ubah');
+Route::delete('/order-layanan/{id}', 'API\TransaksiController@hapus');
+Route::get('/order-layanan/{id}', 'API\TransaksiController@cari');
+// Route::get('/order-layanan/po/{idPo}', 'API\OrderRestockController@cariPo');
+
 //detail transaksi produk
 Route::get('/detail-transaksi-produk', 'API\DetailTransaksiProdukController@tampil');
 Route::post('/detail-transaksi-produk', 'API\DetailTransaksiProdukController@tambah');
@@ -104,6 +115,7 @@ Route::post('/detail-transaksi-layanan', 'API\DetailTransaksiLayananController@t
 Route::post('/detail-transaksi-layanan/{id}', 'API\DetailTransaksiLayananController@ubah');
 Route::delete('/detail-transaksi-layanan/{id}', 'API\DetailTransaksiLayananController@hapus');
 Route::get('/detail-transaksi-layanan/{id}', 'API\DetailTransaksiLayananController@cari');
+Route::get('/detail-transaksi-layanan/transaksi/{id}', 'API\DetailTransaksiLayananController@cariTransaksi');
 
 //detail order restock
 Route::get('/detail-order-restock', 'API\DetailOrderRestockController@tampil');
