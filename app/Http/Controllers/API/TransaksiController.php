@@ -96,10 +96,10 @@ class TransaksiController extends Controller
         $data->total_harga = $sub[0]->total;
 
         if($data->save()){
-            $res['message'] = "berhasil dipindahkah kemenu kasir!";
+            $res['message'] = "Berhasil dipindahkah kemenu kasir!";
             return response($res);
         }else{
-            $res['message'] = "gagal dipindahkan kemenu kasir!";
+            $res['message'] = "Gagal dipindahkan kemenu kasir!";
             return response($res);
         }
     }
@@ -115,10 +115,10 @@ class TransaksiController extends Controller
         $data->diskon = $diskon;
 
         if($data->save()){
-            $res['message'] = "berhasil dibayar!";
+            $res['message'] = "Berhasil dibayar!";
             return response($res);
         }else{
-            $res['message'] = "gagal dibayar!";
+            $res['message'] = "Gagal dibayar!";
             return response($res);
         }
     }
