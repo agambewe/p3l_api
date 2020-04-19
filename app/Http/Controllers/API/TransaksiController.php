@@ -20,11 +20,15 @@ class TransaksiController extends Controller
                         ->get();
     }
 
-    // public function tlayananKasir(){
-    //     return Transaksi::whereNotNull('kasir')
-    //                     ->where('status_layanan',1)
-    //                     ->get();
-    // }
+    public function tlayananKasir(){
+        return Transaksi::where('status_layanan',1)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+        // return DB::select('SELECT SUM(d.subtotal) "total" FROM detail_transaksi_layanan d 
+        //         JOIN transaksi t USING(id_transaksi)
+        //         WHERE id_transaksi = "LY-200120-01"');
+        
+    }
 
     public function idTransaksiMaker(){
         $simpen = Transaksi::whereNotNull('status_layanan')
@@ -72,7 +76,7 @@ class TransaksiController extends Controller
 
         if($data->save()){
             $res['message'] = "Berhasil diproses!";
-            $res['id'] = $data->id_transaksi;
+            $res['value'] = $data->id_transaksi;
             return response($res);
         }else{
             $res['message'] = "Gagal diproses!";
@@ -80,16 +84,41 @@ class TransaksiController extends Controller
         }
     }
 
-    public function ubah(Request $request, $id)
+    public function selesaiLayanan(Request $request, $id)
     {
         $data = Transaksi::where('id',$id)->first();
         $data->status_layanan = 1;
+
+        $sub = DB::select('SELECT SUM(d.subtotal) "total" FROM detail_transaksi_layanan d 
+                    JOIN transaksi t USING(id_transaksi)
+                    WHERE id_transaksi = ?',[$data->id_transaksi]);
+
+        $data->total_harga = $sub[0]->total;
 
         if($data->save()){
             $res['message'] = "berhasil dipindahkah kemenu kasir!";
             return response($res);
         }else{
-            $res['message'] = "gagal diubah!";
+            $res['message'] = "gagal dipindahkan kemenu kasir!";
+            return response($res);
+        }
+    }
+
+    public function bayarLayanan(Request $request, $id)
+    {
+        $kasir = $request->input('kasir');
+        $diskon = $request->input('diskon');
+
+        $data = Transaksi::where('id',$id)->first();
+        $data->status_bayar = 1;
+        $data->kasir = $kasir;
+        $data->diskon = $diskon;
+
+        if($data->save()){
+            $res['message'] = "berhasil dibayar!";
+            return response($res);
+        }else{
+            $res['message'] = "gagal dibayar!";
             return response($res);
         }
     }
