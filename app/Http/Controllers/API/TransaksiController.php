@@ -44,7 +44,7 @@ class TransaksiController extends Controller
 
             $last = ++$id_transaksi[2];
             if($sekarang==$id_transaksi[1]){
-                if(9>$id_transaksi[2]){
+                if(9>=$id_transaksi[2]){
                     $res = $id_transaksi[0]."-".$id_transaksi[1]."-"."0".$last;
                 }else{
                     $res = $id_transaksi[0]."-".$id_transaksi[1]."-".$last;
