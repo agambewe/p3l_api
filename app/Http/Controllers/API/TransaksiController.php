@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Transaksi;
+use App\DetailTransaksiLayanan;
 
 class TransaksiController extends Controller
 {
@@ -128,11 +129,18 @@ class TransaksiController extends Controller
         $data = Transaksi::where('id',$id)->first();
 
         if($data->delete()){
-            $res['message'] = "Berhasil dihapus!";
-            return response($res);
+            $detail = DetailTransaksiLayanan::where('id_transaksi',$data->id_transaksi);
+            if($detail->delete()){
+                $res['message'] = "Berhasil dibatalkan!";
+                return response($res);
+            }
+            else{
+                $res['message'] = "Gagal dibatalkan!";
+                return response($res);
+            }
         }
         else{
-            $res['message'] = "Gagal dihapus!";
+            $res['message'] = "Gagal dibatalkan!";
             return response($res);
         }
     }

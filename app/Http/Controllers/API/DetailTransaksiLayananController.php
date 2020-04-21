@@ -27,12 +27,12 @@ class DetailTransaksiLayananController extends Controller
         $id_layanan = $request->input('id_layanan');
         $subtotal = $request->input('subtotal');
 
-        $count = count($id_hewan);
+        $count = count($subtotal);
         for($i = 0; $i < $count; $i++){
 
             $data = new DetailTransaksiLayanan();
             $data->id_transaksi = $id_transaksi;
-            $data->id_hewan = $id_hewan[$i];
+            $data->id_hewan = $id_hewan;
             $data->id_layanan = $id_layanan[$i];
             $data->subtotal = $subtotal[$i];
             if($data->save()){

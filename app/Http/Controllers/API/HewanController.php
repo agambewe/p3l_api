@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Hewan;
+use App\DetailTransaksiLayanan;
 
 class HewanController extends Controller
 {
     public function tampil(){
         return Hewan::all();
+        // $a = DetailTransaksiLayanan::where('id_transaksi',"LY-200421-01")->get();
+        // dd($a);
+        // return $a;
     }
 
     public function sampah(){
@@ -127,15 +131,22 @@ class HewanController extends Controller
     }
 
     public function cari($id){
-        $data = Hewan::find($id);
+        // return Hewan::find($id);
 
-        if (is_null($data)){
+        $sub = DB::select('SELECT h.nama, j.nama "jenis" FROM hewan h 
+                JOIN jenis_hewan j ON h.id_jenis=j.id
+                WHERE h.id = ?',[$id]);
+
+        $data = $sub[0];
+        // return response()->json($data);
+
+        if (empty($data)){
             $res['message'] = "Data hewan tidak ditemukan!";
             return response($res);
         }else{
             $res['message'] = "Data hewan ditemukan!";
-            $res['value'] = "$data";
-            return response($data);
+            $res['value'] = $data;
+            return response($res);
         }
     }
 }
