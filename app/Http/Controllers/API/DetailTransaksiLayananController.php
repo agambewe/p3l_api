@@ -44,15 +44,6 @@ class DetailTransaksiLayananController extends Controller
                 // return response($res);
             }
         }
-
-        // if($data->save()){
-        //     $res['message'] = "berhasil dimasukkan!";
-        //     $res['id'] = $data->id;
-        //     return response($res);
-        // }else{
-        //     $res['message'] = "gagal dimasukkan!";
-        //     return response($res);
-        // }
     }
 
     public function ubah(Request $request, $id)
@@ -100,16 +91,36 @@ class DetailTransaksiLayananController extends Controller
         }
     }
 
-    public function cariTransaksi($id){
-        $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
+    // public function cariTransaksi($id){
+    //     $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
 
-        if (is_null($data)){
+    //     if (is_null($data)){
+    //         $res['message'] = "tidak ditemukan!";
+    //         return response($res);
+    //     }else{
+    //         $res['message'] = "ditemukan!";
+    //         $res['value'] = "$data";
+    //         return response($data);
+    //     }
+    // }
+
+    public function cariTransaksi($id){
+        // $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
+	
+        $data = DB::select('SELECT d.id, d.id_transaksi, c.id "id_customer", 
+                            c.nama, d.id_hewan, d.id_layanan, d.subtotal 
+                            FROM detail_transaksi_layanan d 
+                            JOIN hewan h ON d.id_hewan=h.id
+                            JOIN customer c ON h.id_customer=c.id
+                            WHERE id_transaksi = ?',[$id]);
+        
+        if (empty($data)){
             $res['message'] = "tidak ditemukan!";
             return response($res);
         }else{
             $res['message'] = "ditemukan!";
-            $res['value'] = "$data";
-            return response($data);
+            $res['value'] = $data;
+            return response($res);
         }
     }
 }

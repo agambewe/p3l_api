@@ -15,7 +15,7 @@ class CreateTransaksiTable extends Migration
     {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('id_transaksi')->unique();
+            $table->string('id_transaksi');
             $table->string('cs', 100);
             $table->string('kasir', 100)->nullable();
             $table->decimal('total_harga', 18, 2)->nullable();

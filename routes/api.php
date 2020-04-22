@@ -92,8 +92,11 @@ Route::delete('/order-restock/{id}', 'API\OrderRestockController@hapus');
 Route::get('/order-restock/{id}', 'API\OrderRestockController@cari');
 Route::get('/order-restock/po/{idPo}', 'API\OrderRestockController@cariPo');
 
+//transaksi produk
+Route::get('/order-produk', 'API\TransaksiController@tprodukCS');
+
 //transaksi layanan
-//CS
+//CS layanan
 Route::get('/order-layanan', 'API\TransaksiController@tlayananCS');
 Route::get('/order-layanann', 'API\TransaksiController@idTransaksiMaker');
 Route::post('/order-layanan', 'API\TransaksiController@tambah');

@@ -21,6 +21,13 @@ class TransaksiController extends Controller
                         ->get();
     }
 
+    public function tprodukCS(){
+        return Transaksi::whereNull('kasir')
+                        ->whereNull('status_layanan')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+    }
+
     public function tlayananKasir(){
         return Transaksi::where('status_layanan',1)
                         ->orderBy('created_at', 'desc')
@@ -90,7 +97,8 @@ class TransaksiController extends Controller
         $data = Transaksi::where('id',$id)->first();
         $data->status_layanan = 1;
 
-        $sub = DB::select('SELECT SUM(d.subtotal) "total" FROM detail_transaksi_layanan d 
+        $sub = DB::select('SELECT SUM(d.subtotal) "total" 
+                    FROM detail_transaksi_layanan d 
                     JOIN transaksi t USING(id_transaksi)
                     WHERE id_transaksi = ?',[$data->id_transaksi]);
 

@@ -15,7 +15,7 @@ class CreateOrderRestockTable extends Migration
     {
         Schema::create('order_restock', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('id_po')->unique();
+            $table->string('id_po');
             $table->unsignedInteger('id_supplier');
             $table->foreign('id_supplier')
                 ->references('id')
