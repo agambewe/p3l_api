@@ -15,4 +15,8 @@ class JenisHewan extends Model
 
     use SoftDeletes;
     protected $dates =['deleted_at'];
+
+    public function hewan(){
+        return $this->belongsTo(Hewan::class, 'id_jenis');
+    }
 }

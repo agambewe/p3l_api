@@ -11,7 +11,8 @@ use App\DetailTransaksiLayanan;
 class HewanController extends Controller
 {
     public function tampil(){
-        return Hewan::all();
+        // return Hewan::all();
+        return Hewan::with(['customer','jenisHewan'])->get();
         // $a = DetailTransaksiLayanan::where('id_transaksi',"LY-200421-01")->get();
         // dd($a);
         // return $a;
@@ -146,7 +147,8 @@ class HewanController extends Controller
         }else{
             $res['message'] = "Data hewan ditemukan!";
             $res['value'] = $data;
-            return response($res);
+            // return response($data);
+            return response()->json($data);
         }
     }
 }

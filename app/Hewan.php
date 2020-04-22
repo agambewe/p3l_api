@@ -20,4 +20,12 @@ class Hewan extends Model
 
     use SoftDeletes;
     protected $dates =['deleted_at'];
+
+    public function jenisHewan(){
+        return $this->belongsTo(JenisHewan::class, 'id_jenis', 'id');
+        // return $this->hasMany(JenisHewan::class, 'id', 'id_jenis');
+    }
+    public function customer(){
+        return $this->belongsTo(Customer::class, 'id_customer', 'id');
+    }
 }

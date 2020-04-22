@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Transaksi;
 use App\DetailTransaksiLayanan;
+use App\DetailTransaksiProduk;
 
 class TransaksiController extends Controller
 {
@@ -132,12 +133,33 @@ class TransaksiController extends Controller
         }
     }
 
-    public function hapus($id)
+    public function hapusLayanan($id)
     {
         $data = Transaksi::where('id',$id)->first();
 
         if($data->delete()){
             $detail = DetailTransaksiLayanan::where('id_transaksi',$data->id_transaksi);
+            if($detail->delete()){
+                $res['message'] = "Berhasil dibatalkan!";
+                return response($res);
+            }
+            else{
+                $res['message'] = "Gagal dibatalkan!";
+                return response($res);
+            }
+        }
+        else{
+            $res['message'] = "Gagal dibatalkan!";
+            return response($res);
+        }
+    }
+
+    public function hapusProduk($id)
+    {
+        $data = Transaksi::where('id',$id)->first();
+
+        if($data->delete()){
+            $detail = DetailTransaksiProduk::where('id_transaksi',$data->id_transaksi);
             if($detail->delete()){
                 $res['message'] = "Berhasil dibatalkan!";
                 return response($res);

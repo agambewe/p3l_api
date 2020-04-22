@@ -10,7 +10,7 @@ use App\DetailTransaksiLayanan;
 class DetailTransaksiLayananController extends Controller
 {
     public function tampil(){
-        return DetailTransaksiLayanan::all();
+        return DetailTransaksiLayanan::with(['hewan','layanan'])->get();
     }
 
     public function tambah(Request $request)
@@ -107,12 +107,20 @@ class DetailTransaksiLayananController extends Controller
     public function cariTransaksi($id){
         // $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
 	
-        $data = DB::select('SELECT d.id, d.id_transaksi, c.id "id_customer", 
-                            c.nama, d.id_hewan, d.id_layanan, d.subtotal 
-                            FROM detail_transaksi_layanan d 
-                            JOIN hewan h ON d.id_hewan=h.id
-                            JOIN customer c ON h.id_customer=c.id
-                            WHERE id_transaksi = ?',[$id]);
+        // $data = DB::select('SELECT d.id, d.id_transaksi, c.id "id_customer", 
+        //                     c.nama, d.id_hewan, d.id_layanan, d.subtotal 
+        //                     FROM detail_transaksi_layanan d 
+        //                     JOIN hewan h ON d.id_hewan=h.id
+        //                     JOIN customer c ON h.id_customer=c.id
+        //                     WHERE id_transaksi = ?',[$id]);
+        // $data = DB::table('detail_transaksi_layanan')
+        //     ->join('hewan', 'detail_transaksi_layanan.id_hewan', 'hewan.id')
+        //     ->join('customer', 'hewan.id_customer', 'customer.id')
+        //     ->where('detail_transaksi_layanan.id_transaksi', $id)
+        //     ->get();
+
+        $data = DetailTransaksiLayanan::with(['hewan','layanan'])
+                ->where('id_transaksi', $id)->get();
         
         if (empty($data)){
             $res['message'] = "tidak ditemukan!";
@@ -120,7 +128,7 @@ class DetailTransaksiLayananController extends Controller
         }else{
             $res['message'] = "ditemukan!";
             $res['value'] = $data;
-            return response($res);
+            return response($data);
         }
     }
 }

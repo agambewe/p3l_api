@@ -16,8 +16,11 @@ class DetailTransaksiLayanan extends Model
     use SoftDeletes;
     protected $dates =['deleted_at'];
 
-    // public function transaksi()
-    // {
-    //     return $this->belongsTo('App\Models\Transaksi');
-    // }
+    public function layanan(){
+        return $this->belongsTo(Layanan::class, 'id_layanan', 'id');
+    }
+
+    public function hewan(){
+        return $this->belongsTo(Hewan::class, 'id_hewan', 'id');
+    }
 }
