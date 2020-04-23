@@ -48,20 +48,28 @@ class DetailTransaksiLayananController extends Controller
 
     public function ubah(Request $request, $id)
     {
-        $jumlah = $request->input('jumlah');
+        $id_hewan = $request->input('id_hewan');
+        $id_layanan = $request->input('id_layanan');
         $subtotal = $request->input('subtotal');
 
-        $data = DetailTransaksiLayanan::where('id',$id)->first();
-        $data->jumlah = $jumlah;
-        $data->subtotal = $subtotal;
+        $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
 
-        if($data->save()){
-            $res['message'] = "berhasil diubah!";
-            return response($res);
-        }else{
-            $res['message'] = "gagal diubah!";
-            return response($res);
+        $count = count($data);
+        for($i = 0; $i < $count; $i++){
+
+            $data[$i]->id_hewan = $id_hewan;
+            $data[$i]->id_layanan = $id_layanan[$i];
+            $data[$i]->subtotal = $subtotal[$i];
+
+            if($data[$i]->save()){
+                $res['message'] = "Berhasil diubah!";
+                // return response($res);
+            }else{
+                $res['message'] = "Gagal diubah!";
+                // return response($res);
+            }
         }
+        return response($res);
     }
 
     public function hapus($id)

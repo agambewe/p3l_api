@@ -16,7 +16,7 @@ class CreateDetailTransaksiLayananTable extends Migration
         Schema::create('detail_transaksi_layanan', function (Blueprint $table) {
             $table->increments('id');
             $table->string('id_transaksi');
-            $table->unsignedInteger('id_hewan');
+            $table->unsignedInteger('id_hewan')->nullable();
             $table->foreign('id_hewan')
                 ->references('id')
                 ->on('hewan');
