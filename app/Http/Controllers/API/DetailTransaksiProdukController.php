@@ -15,24 +15,37 @@ class DetailTransaksiProdukController extends Controller
 
     public function tambah(Request $request)
     {
+
         $this->validateWith([
+            'id_hewan' => 'required',
+            'id_produk' => 'required',
             'jumlah' => 'required',
             'subtotal' => 'required'
         ]);
 
+        $id_transaksi = $request->input('id_transaksi');
+        $id_hewan = $request->input('id_hewan');
+        $id_produk = $request->input('id_produk');
         $jumlah = $request->input('jumlah');
         $subtotal = $request->input('subtotal');
 
-        $data = new DetailTransaksiProduk();
-        $data->jumlah = $jumlah;
-        $data->subtotal = $subtotal;
+        $count = count($subtotal);
+        for($i = 0; $i < $count; $i++){
 
-        if($data->save()){
-            $res['message'] = "berhasil dimasukkan!";
-            return response($res);
-        }else{
-            $res['message'] = "gagal dimasukkan!";
-            return response($res);
+            $data = new DetailTransaksiProduk();
+            $data->id_transaksi = $id_transaksi;
+            $data->id_hewan = $id_hewan;
+            $data->id_produk = $id_produk[$i];
+            $data->jumlah = $jumlah[$i];
+            $data->subtotal = $subtotal[$i];
+            if($data->save()){
+                $res['message'] = "berhasil dimasukkan!";
+                $res['id'] = $data->id;
+                // return response($res);
+            }else{
+                $res['message'] = "gagal dimasukkan!";
+                // return response($res);
+            }
         }
     }
 

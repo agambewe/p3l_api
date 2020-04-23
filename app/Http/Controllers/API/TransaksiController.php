@@ -65,8 +65,35 @@ class TransaksiController extends Controller
         
         return response($res);
     }
+
+    public function idTransaksiProdukMaker(){
+        $simpen = Transaksi::whereNull('status_layanan')
+                        ->orderBy('id', 'desc')
+                        ->first();
+
+        $sekarang = date('ymd');
+        if (!$simpen) {
+            $res = "PR-".$sekarang."-01";
+        }else{
+            $id_transaksi = $simpen->id_transaksi;
+            $id_transaksi = explode("-", $id_transaksi);
+
+            $last = ++$id_transaksi[2];
+            if($sekarang==$id_transaksi[1]){
+                if(9>=$id_transaksi[2]){
+                    $res = $id_transaksi[0]."-".$id_transaksi[1]."-"."0".$last;
+                }else{
+                    $res = $id_transaksi[0]."-".$id_transaksi[1]."-".$last;
+                }
+            }else{
+                $res = $id_transaksi[0]."-".$sekarang."-01";
+            }
+        }
+        
+        return response($res);
+    }
     
-    public function tambah(Request $request)
+    public function tambahLayanan(Request $request)
     {
 
         $this->validateWith([
@@ -81,6 +108,32 @@ class TransaksiController extends Controller
         $data->cs = $cs;
         $data->status_bayar = 0;
         $data->status_layanan = 0;
+        $data->tanggal_transaksi = date('Y-m-d');
+
+        if($data->save()){
+            $res['message'] = "Berhasil diproses!";
+            $res['value'] = $data->id_transaksi;
+            return response($res);
+        }else{
+            $res['message'] = "Gagal diproses!";
+            return response($res);
+        }
+    }
+
+    public function tambahProduk(Request $request)
+    {
+
+        $this->validateWith([
+            'cs' => 'required',
+        ]);
+
+        $cs = $request->input('cs');
+        $aidi = $this->idTransaksiProdukMaker();
+
+        $data = new Transaksi();
+        $data->id_transaksi = $aidi->original;
+        $data->cs = $cs;
+        $data->status_bayar = 0;
         $data->tanggal_transaksi = date('Y-m-d');
 
         if($data->save()){
