@@ -14,7 +14,7 @@ class DetailTransaksiLayananSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        $namas = [3, 3, 3];
+        $namas = [1, 1, 2, 2, 2, 2, 3, 3, 3];
         $i=1;
         $j=1;
         foreach($namas as $nama){
@@ -22,7 +22,8 @@ class DetailTransaksiLayananSeeder extends Seeder
                 ->insert([
                     'id_transaksi' => 'LY-200120-0'.$nama,
                     'id_layanan' => $i++,
-                    'id_hewan' => $j,
+                    // 'id_hewan' => $j,
+                    'id_hewan' => $faker->numberBetween(1,3),
                     // 'jumlah' => $faker->numberBetween(1,12),
                     'subtotal' => $faker->randomElement($array = array ("100000", "150000", "200000", "250000", "105000", "205000"))
             ]);
