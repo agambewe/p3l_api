@@ -14,7 +14,7 @@ class ProdukSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        $namas = ['Blackwood Lamb', 'Maxima Shampo', 'Pawloshopy Shampo', 'Jerry High Lamb', 'Jerky Stick Carrot'];
+        $namas = ['Blackwood Lamb', 'Maxima Shampo', 'Pawloshopy Shampo', 'Jerry High Lamb', 'Jerky Stick Carrot', 'Caca Sikat', 'Obat kuat', 'Obat radang'];
         foreach($namas as $nama){
             DB::table('produk')
                 ->insert([
