@@ -11,7 +11,8 @@ use App\Transaksi;
 class DetailTransaksiProdukController extends Controller
 {
     public function tampil(){
-        return DetailTransaksiProduk::all();
+        // return DetailTransaksiProduk::all();
+        return DetailTransaksiProduk::with(['hewan','produk'])->get();
     }
 
     public function updateTotalHarga($id)

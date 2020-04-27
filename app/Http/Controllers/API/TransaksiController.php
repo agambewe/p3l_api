@@ -23,7 +23,7 @@ class TransaksiController extends Controller
     }
 
     public function tprodukCS(){
-        return Transaksi::whereNull('total_harga')
+        return Transaksi::whereNull('kasir')
                         ->whereNull('status_layanan')
                         ->orderBy('created_at', 'desc')
                         ->get();
