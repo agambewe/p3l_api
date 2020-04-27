@@ -38,12 +38,12 @@ class DetailTransaksiProdukController extends Controller
     public function tambah(Request $request)
     {
 
-        // $this->validateWith([
-        //     'id_hewan' => 'required',
-        //     'id_produk' => 'required',
-        //     'jumlah' => 'required',
-        //     'subtotal' => 'required'
-        // ]);
+        $this->validateWith([
+            // 'id_hewan' => 'required',
+            'id_produk' => 'required',
+            'jumlah' => 'required',
+            'subtotal' => 'required'
+        ]);
 
         $id_transaksi = $request->input('id_transaksi');
         $id_hewan = $request->input('id_hewan');
@@ -56,7 +56,9 @@ class DetailTransaksiProdukController extends Controller
 
             $data = new DetailTransaksiProduk();
             $data->id_transaksi = $id_transaksi;
-            $data->id_hewan = $id_hewan;
+            if($id_hewan!=null){
+                $data->id_hewan = $id_hewan;
+            }
             $data->id_produk = $id_produk[$i];
             $data->jumlah = $jumlah[$i];
             $data->subtotal = $subtotal[$i];

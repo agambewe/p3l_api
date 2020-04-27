@@ -18,7 +18,7 @@ class DetailTransaksiLayananController extends Controller
     {
 
         $this->validateWith([
-            'id_hewan' => 'required',
+            // 'id_hewan' => 'required',
             'id_layanan' => 'required',
             'subtotal' => 'required'
         ]);
@@ -33,7 +33,9 @@ class DetailTransaksiLayananController extends Controller
 
             $data = new DetailTransaksiLayanan();
             $data->id_transaksi = $id_transaksi;
-            $data->id_hewan = $id_hewan;
+            if($id_hewan!=null){
+                $data->id_hewan = $id_hewan;
+            }
             $data->id_layanan = $id_layanan[$i];
             $data->subtotal = $subtotal[$i];
             if($data->save()){
