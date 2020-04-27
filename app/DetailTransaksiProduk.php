@@ -15,4 +15,12 @@ class DetailTransaksiProduk extends Model
 
     use SoftDeletes;
     protected $dates =['deleted_at'];
+
+    public function produk(){
+        return $this->belongsTo(Produk::class, 'id_produk', 'id');
+    }
+
+    public function hewan(){
+        return $this->belongsTo(Hewan::class, 'id_hewan', 'id');
+    }
 }

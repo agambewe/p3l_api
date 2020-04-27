@@ -139,4 +139,20 @@ class DetailTransaksiLayananController extends Controller
             return response($data);
         }
     }
+
+    public function hapusTransaksi(Request $request, $id){
+        $index = $request->input('index');
+
+        $data = DetailTransaksiLayanan::where('id_transaksi', $id)
+                                    ->skip($index)
+                                    ->first();
+        if($data->delete()){
+            $res['message'] = "Berhasil dibatalkan!";
+            return response($res);
+        }
+        else{
+            $res['message'] = "Gagal dihapus!";
+            return response($res);
+        }
+    }
 }

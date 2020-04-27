@@ -51,20 +51,30 @@ class DetailTransaksiProdukController extends Controller
 
     public function ubah(Request $request, $id)
     {
+        $id_hewan = $request->input('id_hewan');
+        $id_produk = $request->input('id_produk');
         $jumlah = $request->input('jumlah');
         $subtotal = $request->input('subtotal');
 
-        $data = DetailTransaksiProduk::where('id',$id)->first();
-        $data->jumlah = $jumlah;
-        $data->subtotal = $subtotal;
+        $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
 
-        if($data->save()){
-            $res['message'] = "berhasil diubah!";
-            return response($res);
-        }else{
-            $res['message'] = "gagal diubah!";
-            return response($res);
+        $count = count($data);
+        for($i = 0; $i < $count; $i++){
+
+            $data[$i]->id_hewan = $id_hewan;
+            $data[$i]->id_produk = $id_produk[$i];
+            $data[$i]->jumlah = $jumlah[$i];
+            $data[$i]->subtotal = $subtotal[$i];
+
+            if($data[$i]->save()){
+                $res['message'] = "Berhasil diubah!";
+                // return response($res);
+            }else{
+                $res['message'] = "Gagal diubah!";
+                // return response($res);
+            }
         }
+        return response($res);
     }
 
     public function hapus($id)
@@ -91,6 +101,35 @@ class DetailTransaksiProdukController extends Controller
             $res['message'] = "ditemukan!";
             $res['value'] = "$data";
             return response($data);
+        }
+    }
+
+    public function cariTransaksi($id){
+        $data = DetailTransaksiProduk::with(['hewan','produk'])
+                ->where('id_transaksi', $id)->get();
+        if (empty($data)){
+            $res['message'] = "tidak ditemukan!";
+            return response($res);
+        }else{
+            $res['message'] = "ditemukan!";
+            $res['value'] = $data;
+            return response($data);
+        }
+    }
+
+    public function hapusTransaksi(Request $request, $id){
+        $index = $request->input('index');
+
+        $data = DetailTransaksiProduk::where('id_transaksi', $id)
+                                    ->skip($index)
+                                    ->first();
+        if($data->delete()){
+            $res['message'] = "Berhasil dibatalkan!";
+            return response($res);
+        }
+        else{
+            $res['message'] = "Gagal dihapus!";
+            return response($res);
         }
     }
 }
