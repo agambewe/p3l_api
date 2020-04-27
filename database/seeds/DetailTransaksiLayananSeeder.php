@@ -23,7 +23,7 @@ class DetailTransaksiLayananSeeder extends Seeder
                     'id_transaksi' => 'LY-200120-0'.$nama,
                     'id_layanan' => $i++,
                     // 'id_hewan' => $j,
-                    'id_hewan' => $faker->numberBetween(1,3),
+                    'id_hewan' => $nama,
                     // 'jumlah' => $faker->numberBetween(1,12),
                     'subtotal' => $faker->randomElement($array = array ("100000", "150000", "200000", "250000", "105000", "205000"))
             ]);
