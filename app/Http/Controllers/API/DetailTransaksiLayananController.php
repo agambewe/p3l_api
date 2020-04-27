@@ -146,7 +146,7 @@ class DetailTransaksiLayananController extends Controller
         $data = DetailTransaksiLayanan::where('id_transaksi', $id)
                                     ->skip($index)
                                     ->first();
-        if($data->delete()){
+        if($data->forceDelete()){
             $res['message'] = "Berhasil dibatalkan!";
             return response($res);
         }

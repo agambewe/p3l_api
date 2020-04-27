@@ -96,6 +96,7 @@ Route::get('/order-restock/po/{idPo}', 'API\OrderRestockController@cariPo');
 Route::get('/order-produk', 'API\TransaksiController@tprodukCS');
 Route::delete('/order-produk/{id}', 'API\TransaksiController@hapusProduk');
 Route::post('/order-produk', 'API\TransaksiController@tambahProduk');
+Route::post('/order-produk/pindah-kasir/{id}', 'API\TransaksiController@pindahKasir');
 //transaksi layanan
 //CS layanan
 Route::get('/order-layanan', 'API\TransaksiController@tlayananCS');
@@ -107,6 +108,8 @@ Route::get('/order-layanan/{id}', 'API\TransaksiController@cari');
 //Kasir
 Route::get('/bayar-layanan', 'API\TransaksiController@tlayananKasir');
 Route::post('/bayar-layanan/bayar-layanan/{id}', 'API\TransaksiController@bayarLayanan');
+Route::get('/bayar-produk', 'API\TransaksiController@tprodukKasir');
+Route::post('/bayar-produk/bayar-produk/{id}', 'API\TransaksiController@bayarProduk');
 // Route::get('/order-layanan/po/{idPo}', 'API\OrderRestockController@cariPo');
 
 //detail transaksi produk
