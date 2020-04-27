@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\DetailTransaksiProduk;
+use App\Transaksi;
 
 class DetailTransaksiProdukController extends Controller
 {
@@ -13,15 +14,36 @@ class DetailTransaksiProdukController extends Controller
         return DetailTransaksiProduk::all();
     }
 
+    public function updateTotalHarga($id)
+    {
+        $data = Transaksi::where('id_transaksi',$id)->first();
+
+        $sub = $sub = DB::table('detail_transaksi_produk')
+                ->join('transaksi', 'detail_transaksi_produk.id_transaksi', '=', 'transaksi.id_transaksi')
+                ->where('detail_transaksi_produk.id_transaksi',$data->id_transaksi)
+                ->selectRaw('SUM(detail_transaksi_produk.subtotal) as total')
+                ->get();
+
+        $data->total_harga = $sub[0]->total;
+
+        if($data->save()){
+            $res['message'] = "Berhasil!";
+            return response($res);
+        }else{
+            $res['message'] = "Gagal!";
+            return response($res);
+        }
+    }
+
     public function tambah(Request $request)
     {
 
-        $this->validateWith([
-            'id_hewan' => 'required',
-            'id_produk' => 'required',
-            'jumlah' => 'required',
-            'subtotal' => 'required'
-        ]);
+        // $this->validateWith([
+        //     'id_hewan' => 'required',
+        //     'id_produk' => 'required',
+        //     'jumlah' => 'required',
+        //     'subtotal' => 'required'
+        // ]);
 
         $id_transaksi = $request->input('id_transaksi');
         $id_hewan = $request->input('id_hewan');
@@ -74,6 +96,7 @@ class DetailTransaksiProdukController extends Controller
                 // return response($res);
             }
         }
+        $this->updateTotalHarga($id);
         return response($res);
     }
 

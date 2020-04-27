@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\DetailTransaksiLayanan;
+use App\Transaksi;
 
 class DetailTransaksiLayananController extends Controller
 {
@@ -46,6 +47,26 @@ class DetailTransaksiLayananController extends Controller
         }
     }
 
+    public function updateTotalHarga($id)
+    {
+        $data = Transaksi::where('id_transaksi',$id)->first();
+
+        $sub = DB::select('SELECT SUM(d.subtotal) "total" 
+                    FROM detail_transaksi_layanan d 
+                    JOIN transaksi t USING(id_transaksi)
+                    WHERE id_transaksi = ?',[$data->id_transaksi]);
+
+        $data->total_harga = $sub[0]->total;
+
+        if($data->save()){
+            $res['message'] = "Berhasil!";
+            return response($res);
+        }else{
+            $res['message'] = "Gagal!";
+            return response($res);
+        }
+    }
+
     public function ubah(Request $request, $id)
     {
         $id_hewan = $request->input('id_hewan');
@@ -69,6 +90,7 @@ class DetailTransaksiLayananController extends Controller
                 // return response($res);
             }
         }
+        $this->updateTotalHarga($id);
         return response($res);
     }
 
