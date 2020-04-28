@@ -53,10 +53,17 @@ class DetailTransaksiLayananController extends Controller
     {
         $data = Transaksi::where('id_transaksi',$id)->first();
 
-        $sub = DB::select('SELECT SUM(d.subtotal) "total" 
-                    FROM detail_transaksi_layanan d 
-                    JOIN transaksi t USING(id_transaksi)
-                    WHERE id_transaksi = ?',[$data->id_transaksi]);
+        // $sub = DB::select('SELECT SUM(d.subtotal) "total" 
+        //             FROM detail_transaksi_layanan d 
+        //             JOIN transaksi t USING(id_transaksi)
+        //             WHERE id_transaksi = ?',[$data->id_transaksi]);
+
+        $sub = DB::table('detail_transaksi_layanan AS d')
+        ->join('transaksi AS t', 'd.id_transaksi', '=', 't.id_transaksi')
+        ->where('d.id_transaksi',$data->id_transaksi)
+        ->whereNull('d.deleted_at')
+        ->selectRaw('SUM(d.subtotal) as total')
+        ->get();
 
         $data->total_harga = $sub[0]->total;
 

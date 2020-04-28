@@ -24,6 +24,7 @@ class TransaksiController extends Controller
 
     public function tprodukCS(){
         return Transaksi::whereNull('kasir')
+                        ->whereNull('total_harga')
                         ->whereNull('status_layanan')
                         ->orderBy('created_at', 'desc')
                         ->get();
@@ -226,13 +227,31 @@ class TransaksiController extends Controller
         $data->kasir = $kasir;
         $data->diskon = $diskon;
 
+        $aidi = $data->id_transaksi;
         if($data->save()){
+            $this->updateBarangKeluar($aidi);
             $res['message'] = "Berhasil dibayar!";
             return response($res);
         }else{
             $res['message'] = "Gagal dibayar!";
             return response($res);
         }
+    }
+
+    public function updateBarangKeluar($id){
+        $produk = DB::table('detail_transaksi_produk')
+            ->where('id_transaksi',$id)
+            ->whereNull('deleted_at')
+            ->selectRaw('id_transaksi, id_produk, jumlah')
+            ->get();
+
+        // DB::select('SELECT id_transaksi, id_produk, jumlah
+        //         FROM detail_transaksi_produk
+        //         WHERE id_transaksi ?',[$id]);
+            foreach ($produk as $d) {
+                DB::table('produk')->where('id',$d->id_produk)
+                                ->decrement('stok', $d->jumlah);
+            }
     }
 
     public function hapusLayanan($id)
