@@ -186,4 +186,16 @@ class DetailTransaksiLayananController extends Controller
             return response($res);
         }
     }
+
+    public function restoreList($id){
+        $data = DetailTransaksiLayanan::onlyTrashed()->where('id_transaksi',$id);
+        if($data->restore()){
+            $res['message'] = "Berhasil restore!";
+            return response($res);
+        }
+        else{
+            $res['message'] = "Gagal restore!";
+            return response($res);
+        }
+    }
 }

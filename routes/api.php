@@ -119,8 +119,10 @@ Route::post('/detail-transaksi-produk/{id}', 'API\DetailTransaksiProdukControlle
 Route::delete('/detail-transaksi-produk/{id}', 'API\DetailTransaksiProdukController@hapus');
 Route::get('/detail-transaksi-produk/{id}', 'API\DetailTransaksiProdukController@cari');
 Route::get('/detail-transaksi-produk/transaksi/{id}', 'API\DetailTransaksiProdukController@cariTransaksi');
+Route::post('/detail-transaksi-produk/CS/{id}', 'API\DetailTransaksiProdukController@ubahCS');
 //batal atau hapus detail
 Route::post('/detail-transaksi-produk/transaksi/{id}', 'API\DetailTransaksiProdukController@hapusTransaksi');
+Route::get('/detail-transaksi-produk/restore/{id}', 'API\DetailTransaksiProdukController@restoreList');
 
 //detail transaksi layanan
 Route::get('/detail-transaksi-layanan', 'API\DetailTransaksiLayananController@tampil');
@@ -131,6 +133,7 @@ Route::get('/detail-transaksi-layanan/{id}', 'API\DetailTransaksiLayananControll
 Route::get('/detail-transaksi-layanan/transaksi/{id}', 'API\DetailTransaksiLayananController@cariTransaksi');
 //batal atau hapus detail
 Route::post('/detail-transaksi-layanan/transaksi/{id}', 'API\DetailTransaksiLayananController@hapusTransaksi');
+Route::get('/detail-transaksi-layanan/restore/{id}', 'API\DetailTransaksiLayananController@restoreList');
 
 //detail order restock
 Route::get('/detail-order-restock', 'API\DetailOrderRestockController@tampil');

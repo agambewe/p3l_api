@@ -104,6 +104,35 @@ class DetailTransaksiProdukController extends Controller
         return response($res);
     }
 
+    public function ubahCS(Request $request, $id)
+    {
+        $id_hewan = $request->input('id_hewan');
+        $id_produk = $request->input('id_produk');
+        $jumlah = $request->input('jumlah');
+        $subtotal = $request->input('subtotal');
+
+        $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
+
+        $count = count($data);
+        for($i = 0; $i < $count; $i++){
+
+            $data[$i]->id_hewan = $id_hewan;
+            $data[$i]->id_produk = $id_produk[$i];
+            $data[$i]->jumlah = $jumlah[$i];
+            $data[$i]->subtotal = $subtotal[$i];
+
+            if($data[$i]->save()){
+                $res['message'] = "Berhasil diubah!";
+                // return response($res);
+            }else{
+                $res['message'] = "Gagal diubah!";
+                // return response($res);
+            }
+        }
+        // $this->updateTotalHarga($id);
+        return response($res);
+    }
+
     public function hapus($id)
     {
         $data = DetailTransaksiProduk::where('id',$id)->first();
@@ -156,6 +185,18 @@ class DetailTransaksiProdukController extends Controller
         }
         else{
             $res['message'] = "Gagal dihapus!";
+            return response($res);
+        }
+    }
+
+    public function restoreList($id){
+        $data = DetailTransaksiProduk::onlyTrashed()->where('id_transaksi',$id);
+        if($data->restore()){
+            $res['message'] = "Berhasil restore!";
+            return response($res);
+        }
+        else{
+            $res['message'] = "Gagal restore!";
             return response($res);
         }
     }
