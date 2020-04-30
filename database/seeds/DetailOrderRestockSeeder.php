@@ -19,7 +19,8 @@ class DetailOrderRestockSeeder extends Seeder
             DB::table('detail_order_restock')
                 ->insert([
                     'id_produk' => $i,
-                    'id_order_restock' => $i,
+                    'id_po' => "PO-2020-03-01-0".$i,
+                    // 'id_supplier' => $i,
                     'jumlah' => $faker->numberBetween(1,12),
                     'subtotal' => $faker->randomElement($array = array ("100000", "150000", "200000", "250000", "105000", "205000")),
                     'created_at' => date("Y-m-d H:i:s"),

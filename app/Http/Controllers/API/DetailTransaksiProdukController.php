@@ -23,6 +23,7 @@ class DetailTransaksiProdukController extends Controller
                 ->join('transaksi AS t', 'd.id_transaksi', '=', 't.id_transaksi')
                 ->where('d.id_transaksi',$data->id_transaksi)
                 ->whereNull('d.deleted_at')
+                ->whereNull('t.deleted_at')
                 ->selectRaw('SUM(d.subtotal) as total')
                 ->get();
 

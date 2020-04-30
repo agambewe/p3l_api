@@ -15,4 +15,12 @@ class DetailOrderRestock extends Model
 
     use SoftDeletes;
     protected $dates =['deleted_at'];
+
+    public function produk(){
+        return $this->belongsTo(Produk::class, 'id_produk', 'id');
+    }
+
+    public function supplier(){
+        return $this->belongsTo(supplier::class, 'id_supplier', 'id');
+    }
 }

@@ -15,14 +15,15 @@ class CreateDetailOrderRestockTable extends Migration
     {
         Schema::create('detail_order_restock', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('id_po');
+            // $table->unsignedInteger('id_supplier');
+            // $table->foreign('id_supplier')
+            //     ->references('id')
+            //     ->on('supplier');
             $table->unsignedInteger('id_produk');
             $table->foreign('id_produk')
                 ->references('id')
                 ->on('produk');
-            $table->unsignedInteger('id_order_restock');
-            $table->foreign('id_order_restock')
-                ->references('id')
-                ->on('order_restock');
             $table->integer('jumlah');
             $table->decimal('subtotal', 18, 2);
             $table->timestamps();

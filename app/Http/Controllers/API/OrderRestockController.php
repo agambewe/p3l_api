@@ -6,54 +6,101 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\OrderRestock;
+use App\DetailOrderRestock;
 
 class OrderRestockController extends Controller
 {
     public function tampil(){
         // return OrderRestock::orderBy('status_order', 'asc')->get();
-        return OrderRestock::all();
+        return OrderRestock::with(['supplier'])->get();
+    }
+
+    public function idPoMaker(){
+        $simpen = OrderRestock::orderBy('id', 'desc')
+                        ->first();
+
+        $sekarang = date('yy-m-d');
+        if (!$simpen) {
+            $res = "PO-".$sekarang."-01";
+        }else{
+            $id_po = $simpen->id_po;
+            $id_po = explode("-", $id_po);
+
+            $tanggalTerakhir = $id_po[1]."-".$id_po[2]."-".$id_po[3];
+            $last = ++$id_po[4];
+            if($sekarang==$tanggalTerakhir){
+                if(9>=$id_po[4]){
+                    $res = $id_po[0]."-".$tanggalTerakhir."-"."0".$last;
+                }else{
+                    $res = $id_po[0]."-".$tanggalTerakhir."-".$last;
+                }
+            }else{
+                $res = $id_po[0]."-".$sekarang."-01";
+            }
+        }
+        
+        return response($res);
     }
 
     public function tambah(Request $request)
     {
 
         $this->validateWith([
-            'id_po' => 'required',
             'id_supplier' => 'required',
-            'tanggal_restock' => 'required',
-            'total_bayar' => 'required',
         ]);
 
-        $id_po = $request->input('id_po');
         $id_supplier = $request->input('id_supplier');
-        $tanggal_restock = $request->input('tanggal_restock');
         $total_bayar = $request->input('total_bayar');
-        $status_order = 0;
-        // $data = new OrderRestock();
-        // $data->id_po = $id_po;
-        // $data->id_supplier = $id_supplier;
-        // $data->tanggal_restock = $tanggal_restock;
-        // $data->total_bayar = $total_bayar;
-        // $data->status_order = $status_order;
+        $aidi = $this->idPoMaker();
 
-        $id = DB::table('order_restock')->insertGetId(
-            [
-                'id_po' => $id_po, 
-                'id_supplier' => $id_supplier,
-                'tanggal_restock' => $tanggal_restock,
-                'total_bayar' => $total_bayar,
-                'status_order' => $status_order
-            ]
-        );
+        $data = new OrderRestock();
+        $data->id_po = $aidi->original;
+        $data->id_supplier = $id_supplier;
+        $data->status_order = 0;
+        $data->tanggal_restock = date('Y-m-d');
 
-        if(!empty($id)){
+        if($data->save()){
             $res['message'] = "Berhasil diproses!";
-            $res['id'] = $id;
+            $res['value'] = $data->id_po;
             return response($res);
         }else{
             $res['message'] = "Gagal diproses!";
             return response($res);
         }
+    }
+
+    public function selesaiRestock(Request $request, $id)
+    {
+        $kasir = $request->input('kasir');
+        $diskon = $request->input('diskon');
+
+        $data = Transaksi::where('id',$id)->first();
+        $data->status_bayar = 1;
+        $data->kasir = $kasir;
+        $data->diskon = $diskon;
+
+        $aidi = $data->id_transaksi;
+        if($data->save()){
+            $this->updateBarangMasuk($aidi);
+            $res['message'] = "Berhasil dibayar!";
+            return response($res);
+        }else{
+            $res['message'] = "Gagal dibayar!";
+            return response($res);
+        }
+    }
+
+    public function updateBarangMasuk($id){
+        $produk = DB::table('detail_transaksi_produk')
+            ->where('id_transaksi',$id)
+            ->whereNull('deleted_at')
+            ->selectRaw('id_transaksi, id_produk, jumlah')
+            ->get();
+
+            foreach ($produk as $d) {
+                DB::table('produk')->where('id',$d->id_produk)
+                                ->decrement('stok', $d->jumlah);
+            }
     }
 
     public function ubah(Request $request, $id)
@@ -75,11 +122,18 @@ class OrderRestockController extends Controller
         $data = OrderRestock::where('id',$id)->first();
 
         if($data->delete()){
-            $res['message'] = "Berhasil dihapus!";
-            return response($res);
+            $detail = DetailOrderRestock::where('id_po',$data->id_po);
+            if($detail->delete()){
+                $res['message'] = "Berhasil dibatalkan!";
+                return response($res);
+            }
+            else{
+                $res['message'] = "Gagal dibatalkan!";
+                return response($res);
+            }
         }
         else{
-            $res['message'] = "Gagal dihapus!";
+            $res['message'] = "Gagal dibatalkan!";
             return response($res);
         }
     }
