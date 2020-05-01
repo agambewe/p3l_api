@@ -16,6 +16,20 @@ class DetailOrderRestockController extends Controller
         return DetailOrderRestock::with(['produk'])->get();
     }
 
+    public function updateSupplier($id, $id_supplier)
+    {
+        $data = OrderRestock::where('id_po',$id)->first();
+        $data->id_supplier = $id_supplier;
+
+        if($data->save()){
+            $res['message'] = "Berhasil!";
+            return response($res);
+        }else{
+            $res['message'] = "Gagal!";
+            return response($res);
+        }
+    }
+
     public function updateTotalHarga($id)
     {
         $data = OrderRestock::where('id_po',$id)->first();
@@ -73,20 +87,29 @@ class DetailOrderRestockController extends Controller
 
     public function ubah(Request $request, $id)
     {
+        $id_supplier = $request->input('id_supplier');
+        $id_produk = $request->input('id_produk');
         $jumlah = $request->input('jumlah');
-        $subtotal = $request->input('subtotal');
 
-        $data = DetailOrderRestock::where('id',$id)->first();
-        $data->jumlah = $jumlah;
-        $data->subtotal = $subtotal;
+        $data = DetailOrderRestock::where('id_po',$id)->get();
 
-        if($data->save()){
-            $res['message'] = "berhasil diubah!";
-            return response($res);
-        }else{
-            $res['message'] = "gagal diubah!";
-            return response($res);
+        $count = count($data);
+        for($i = 0; $i < $count; $i++){
+
+            $data[$i]->id_produk = $id_produk[$i];
+            $data[$i]->jumlah = $jumlah[$i];
+                $produk = Produk::where('id',$id_produk[$i])->first();
+            $data[$i]->subtotal = $produk->harga*$jumlah[$i];
+
+            if($data[$i]->save()){
+                $res['message'] = "Berhasil diubah!";
+            }else{
+                $res['message'] = "Gagal diubah!";
+            }
         }
+        $this->updateSupplier($id, $id_supplier);
+        $this->updateTotalHarga($id);
+        return response($res);
     }
 
     public function hapus($id)
@@ -117,8 +140,12 @@ class DetailOrderRestockController extends Controller
     }
 
     public function cariPo($id){
-        $data = DetailOrderRestock::with(['produk'])
-                ->where('id_po', $id)->get();
+        $data = DetailOrderRestock::with(['supplier','produk'])
+                ->join('order_restock AS o', 'detail_order_restock.id_po', '=', 'o.id_po')
+                ->where('detail_order_restock.id_po',$id)
+                ->whereNull('detail_order_restock.deleted_at')
+                ->whereNull('o.deleted_at')
+                ->get();
         if (empty($data)){
             $res['message'] = "Tidak ditemukan!";
             return response($res);

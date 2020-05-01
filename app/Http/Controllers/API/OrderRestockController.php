@@ -71,35 +71,31 @@ class OrderRestockController extends Controller
 
     public function selesaiRestock(Request $request, $id)
     {
-        $kasir = $request->input('kasir');
-        $diskon = $request->input('diskon');
 
-        $data = Transaksi::where('id',$id)->first();
-        $data->status_bayar = 1;
-        $data->kasir = $kasir;
-        $data->diskon = $diskon;
+        $data = OrderRestock::where('id',$id)->first();
+        $data->status_order = 1;
 
-        $aidi = $data->id_transaksi;
+        $aidi = $data->id_po;
         if($data->save()){
             $this->updateBarangMasuk($aidi);
-            $res['message'] = "Berhasil dibayar!";
+            $res['message'] = "Barang berhasil diterima!";
             return response($res);
         }else{
-            $res['message'] = "Gagal dibayar!";
+            $res['message'] = "Gagal diterima!";
             return response($res);
         }
     }
 
     public function updateBarangMasuk($id){
-        $produk = DB::table('detail_transaksi_produk')
-            ->where('id_transaksi',$id)
+        $produk = DB::table('detail_order_restock')
+            ->where('id_po',$id)
             ->whereNull('deleted_at')
-            ->selectRaw('id_transaksi, id_produk, jumlah')
+            ->selectRaw('id_po, id_produk, jumlah')
             ->get();
 
             foreach ($produk as $d) {
                 DB::table('produk')->where('id',$d->id_produk)
-                                ->decrement('stok', $d->jumlah);
+                                ->increment('stok', $d->jumlah);
             }
     }
 
