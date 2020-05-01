@@ -155,4 +155,32 @@ class DetailOrderRestockController extends Controller
             return response($data);
         }
     }
+
+    public function hapusPo(Request $request, $id){
+        $index = $request->input('index');
+
+        $data = DetailOrderRestock::where('id_po', $id)
+                                    ->skip($index)
+                                    ->first();
+        if($data->delete()){
+            $res['message'] = "Berhasil dibatalkan!";
+            return response($res);
+        }
+        else{
+            $res['message'] = "Gagal dihapus!";
+            return response($res);
+        }
+    }
+
+    public function restoreList($id){
+        $data = DetailOrderRestock::onlyTrashed()->where('id_po',$id);
+        if($data->restore()){
+            $res['message'] = "Berhasil restore!";
+            return response($res);
+        }
+        else{
+            $res['message'] = "Gagal restore!";
+            return response($res);
+        }
+    }
 }

@@ -143,3 +143,6 @@ Route::post('/detail-order-restock/{id}', 'API\DetailOrderRestockController@ubah
 Route::delete('/detail-order-restock/{id}', 'API\DetailOrderRestockController@hapus');
 Route::get('/detail-order-restock/{id}', 'API\DetailOrderRestockController@cari');
 Route::get('/detail-order-restock/po/{id}', 'API\DetailOrderRestockController@cariPo');
+//batal atau hapus detail
+Route::post('/detail-order-restock/po/{id}', 'API\DetailOrderRestockController@hapusPo');
+Route::get('/detail-order-restock/restore/{id}', 'API\DetailOrderRestockController@restoreList');
