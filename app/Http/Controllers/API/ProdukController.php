@@ -9,6 +9,12 @@ use App\Produk;
 
 class ProdukController extends Controller
 {
+    public function produkMinimal(){
+        // return Produk::where('stok','<=','minimal')
+        //                 ->get();
+        return DB::select('SELECT * FROM `produk` WHERE stok<=minimal');
+    }
+    
     public function tampil(){
         return Produk::all();
     }

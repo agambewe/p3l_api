@@ -62,6 +62,7 @@ Route::post('/produk', 'API\ProdukController@tambah');
 Route::post('/produk/{id}', 'API\ProdukController@ubah');
 Route::delete('/produk/{id}', 'API\ProdukController@hapus');
 Route::get('/produk/{id}', 'API\ProdukController@cari');
+Route::get('/produk-min', 'API\ProdukController@produkMinimal');
 
 //layanan
 Route::get('/layanan', 'API\LayananController@tampil');
