@@ -47,6 +47,7 @@ class ProdukController extends Controller
         $data->minimal = $minimal;
         $data->harga = $harga;
         $data->foto = $nama_file;
+        $data->updated_at = null;
 
         if($data->save()){
             $res['message'] = "Data produk berhasil dimasukkan!";

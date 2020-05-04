@@ -77,6 +77,7 @@ class PegawaiController extends Controller
         $data->telepon = $telepon;
         $data->role = $role;
         $data->password = bcrypt($password);
+        $data->updated_at = null;
 
         if($data->save()){
             $res['message'] = "Data pegawai berhasil dimasukkan!";

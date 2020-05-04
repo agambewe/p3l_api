@@ -23,6 +23,7 @@ class JenisHewanController extends Controller
 
         $data = new JenisHewan();
         $data->nama = $nama;
+        $data->updated_at = null;
 
         if($data->save()){
             $res['message'] = "Data jenis hewan berhasil dimasukkan!";

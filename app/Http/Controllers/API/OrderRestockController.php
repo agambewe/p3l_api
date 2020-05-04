@@ -58,6 +58,7 @@ class OrderRestockController extends Controller
         $data->id_supplier = $id_supplier;
         $data->status_order = 0;
         $data->tanggal_restock = date('Y-m-d');
+        $data->updated_at = null;
 
         if($data->save()){
             $res['message'] = "Berhasil diproses!";

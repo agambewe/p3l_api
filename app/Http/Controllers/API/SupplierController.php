@@ -29,6 +29,7 @@ class SupplierController extends Controller
         $data->nama = $nama;
         $data->alamat = $alamat;
         $data->telepon = $telepon;
+        $data->updated_at = null;
 
         if($data->save()){
             $res['message'] = "Data supplier berhasil dimasukkan!";

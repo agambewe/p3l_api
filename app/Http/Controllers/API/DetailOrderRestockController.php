@@ -74,6 +74,7 @@ class DetailOrderRestockController extends Controller
             $data->jumlah = $jumlah[$i];
                 $produk = Produk::where('id',$id_produk[$i])->first();
             $data->subtotal = $produk->harga*$jumlah[$i];
+            $data->updated_at = null;
             if($data->save()){
                 $res['message'] = "Berhasil dipesan!";
                 $res['id'] = $data->id;

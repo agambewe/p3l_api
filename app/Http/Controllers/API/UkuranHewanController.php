@@ -23,6 +23,7 @@ class UkuranHewanController extends Controller
 
         $data = new UkuranHewan();
         $data->nama = $nama;
+        $data->updated_at = null;
 
         if($data->save()){
             $res['message'] = "Data ukuran hewan berhasil dimasukkan!";

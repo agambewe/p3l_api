@@ -65,6 +65,7 @@ class DetailTransaksiProdukController extends Controller
             $data->id_produk = $id_produk[$i];
             $data->jumlah = $jumlah[$i];
             $data->subtotal = $subtotal[$i];
+            $data->updated_at = null;
             if($data->save()){
                 $res['message'] = "berhasil dimasukkan!";
                 $res['id'] = $data->id;

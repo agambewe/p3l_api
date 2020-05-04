@@ -38,6 +38,7 @@ class DetailTransaksiLayananController extends Controller
             }
             $data->id_layanan = $id_layanan[$i];
             $data->subtotal = $subtotal[$i];
+            $data->updated_at = null;
             if($data->save()){
                 $res['message'] = "berhasil dimasukkan!";
                 $res['id'] = $data->id;

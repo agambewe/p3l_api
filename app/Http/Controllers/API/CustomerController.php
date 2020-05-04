@@ -40,6 +40,7 @@ class CustomerController extends Controller
         $data->telepon = $telepon;
         $data->created_by = $created_by;
         $data->updated_by = $created_by;
+        $data->updated_at = null;
 
         if($data->save()){
             $res['message'] = "Data customer berhasil dimasukkan!";

@@ -29,6 +29,7 @@ class LayananController extends Controller
         $data->id_ukuran = $id_ukuran;
         $data->nama = $nama;
         $data->harga = $harga;
+        $data->updated_at = null;
 
         if($data->save()){
             $res['message'] = "Data layanan berhasil dimasukkan!";
