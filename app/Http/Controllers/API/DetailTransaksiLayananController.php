@@ -48,6 +48,7 @@ class DetailTransaksiLayananController extends Controller
                 // return response($res);
             }
         }
+        return response($res);
     }
 
     public function updateTotalHarga($id)

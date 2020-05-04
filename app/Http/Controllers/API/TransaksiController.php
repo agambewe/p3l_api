@@ -145,7 +145,9 @@ class TransaksiController extends Controller
         $data->tanggal_transaksi = date('Y-m-d');
         $data->updated_at = null;
 
+        // $aede = $data->id_transaksi;
         if($data->save()){
+            // $this->updateBarangKeluar($aede);
             $res['message'] = "Berhasil diproses!";
             $res['value'] = $data->id_transaksi;
             return response($res);
@@ -210,7 +212,9 @@ class TransaksiController extends Controller
         $data = Transaksi::where('id',$id)->first();
         $data->status_bayar = 1;
         $data->kasir = $kasir;
-        $data->diskon = $diskon;
+        if($diskon!=null){
+            $data->diskon = $diskon;
+        }
 
         if($data->save()){
             $res['message'] = "Berhasil dibayar!";
@@ -229,11 +233,11 @@ class TransaksiController extends Controller
         $data = Transaksi::where('id',$id)->first();
         $data->status_bayar = 1;
         $data->kasir = $kasir;
-        $data->diskon = $diskon;
+        if($diskon!=null){
+            $data->diskon = $diskon;
+        }
 
-        $aidi = $data->id_transaksi;
         if($data->save()){
-            $this->updateBarangKeluar($aidi);
             $res['message'] = "Berhasil dibayar!";
             return response($res);
         }else{
@@ -242,19 +246,32 @@ class TransaksiController extends Controller
         }
     }
 
-    public function updateBarangKeluar($id){
+    // public function updateBarangKeluar($id){
+    //     $produk = DB::table('detail_transaksi_produk')
+    //         ->where('id_transaksi',$id)
+    //         ->whereNull('deleted_at')
+    //         ->selectRaw('id_transaksi, id_produk, jumlah')
+    //         ->get();
+
+    //     // DB::select('SELECT id_transaksi, id_produk, jumlah
+    //     //         FROM detail_transaksi_produk
+    //     //         WHERE id_transaksi ?',[$id]);
+    //         foreach ($produk as $d) {
+    //             DB::table('produk')->where('id',$d->id_produk)
+    //                             ->decrement('stok', $d->jumlah);
+    //         }
+    // }
+
+    public function updateBarangMasuk($id){
         $produk = DB::table('detail_transaksi_produk')
             ->where('id_transaksi',$id)
             ->whereNull('deleted_at')
             ->selectRaw('id_transaksi, id_produk, jumlah')
             ->get();
 
-        // DB::select('SELECT id_transaksi, id_produk, jumlah
-        //         FROM detail_transaksi_produk
-        //         WHERE id_transaksi ?',[$id]);
             foreach ($produk as $d) {
                 DB::table('produk')->where('id',$d->id_produk)
-                                ->decrement('stok', $d->jumlah);
+                                ->increment('stok', $d->jumlah);
             }
     }
 
@@ -284,6 +301,7 @@ class TransaksiController extends Controller
         $data = Transaksi::where('id',$id)->first();
 
         if($data->delete()){
+            $this->updateBarangMasuk($data->id_transaksi);
             $detail = DetailTransaksiProduk::where('id_transaksi',$data->id_transaksi);
             if($detail->delete()){
                 $res['message'] = "Berhasil dibatalkan!";

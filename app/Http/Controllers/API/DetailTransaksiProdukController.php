@@ -38,6 +38,19 @@ class DetailTransaksiProdukController extends Controller
         }
     }
 
+    public function updateBarangKeluar($id){
+        $produk = DB::table('detail_transaksi_produk')
+            ->where('id_transaksi',$id)
+            ->whereNull('deleted_at')
+            ->selectRaw('id_transaksi, id_produk, jumlah')
+            ->get();
+
+            foreach ($produk as $d) {
+                DB::table('produk')->where('id',$d->id_produk)
+                                ->decrement('stok', $d->jumlah);
+            }
+    }
+
     public function tambah(Request $request)
     {
 
@@ -75,6 +88,8 @@ class DetailTransaksiProdukController extends Controller
                 // return response($res);
             }
         }
+        $this->updateBarangKeluar($id_transaksi);
+        return response($res);
     }
 
     public function ubah(Request $request, $id)
