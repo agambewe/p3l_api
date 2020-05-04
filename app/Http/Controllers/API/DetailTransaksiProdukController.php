@@ -41,9 +41,9 @@ class DetailTransaksiProdukController extends Controller
     public function updateBarangMasuk($id){
         $produk = DB::table('detail_transaksi_produk')
             ->where('id_transaksi',$id)
-            ->whereNull('deleted_at')
             ->selectRaw('id_transaksi, id_produk, jumlah')
             ->get();
+            // ->whereNull('deleted_at')
 
             foreach ($produk as $d) {
                 DB::table('produk')->where('id',$d->id_produk)
@@ -54,9 +54,10 @@ class DetailTransaksiProdukController extends Controller
     public function updateBarangKeluar($id){
         $produk = DB::table('detail_transaksi_produk')
             ->where('id_transaksi',$id)
-            ->whereNull('deleted_at')
             ->selectRaw('id_transaksi, id_produk, jumlah')
             ->get();
+
+            // ->whereNull('deleted_at')
 
             foreach ($produk as $d) {
                 DB::table('produk')->where('id',$d->id_produk)
@@ -113,6 +114,11 @@ class DetailTransaksiProdukController extends Controller
         $subtotal = $request->input('subtotal');
 
         $this->updateBarangMasuk($id);
+
+        $dataDetil = DetailTransaksiProduk::onlyTrashed()->where('id_transaksi',$id);
+        if($dataDetil->exists()){
+            $dataDetil->forceDelete();
+        }
         $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
 
         $count = count($data);
@@ -144,6 +150,11 @@ class DetailTransaksiProdukController extends Controller
         $subtotal = $request->input('subtotal');
 
         $this->updateBarangMasuk($id);
+
+        $dataDetil = DetailTransaksiProduk::onlyTrashed()->where('id_transaksi',$id);
+        if($dataDetil->exists()){
+            $dataDetil->forceDelete();
+        }
         $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
 
         $count = count($data);

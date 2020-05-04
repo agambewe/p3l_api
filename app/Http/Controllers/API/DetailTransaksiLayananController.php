@@ -85,6 +85,11 @@ class DetailTransaksiLayananController extends Controller
         $id_layanan = $request->input('id_layanan');
         $subtotal = $request->input('subtotal');
 
+        $dataDetil = DetailTransaksiLayanan::onlyTrashed()->where('id_transaksi',$id);
+        if($dataDetil->exists()){
+            $dataDetil->forceDelete();
+        }
+
         $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
 
         $count = count($data);
