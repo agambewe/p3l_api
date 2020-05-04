@@ -281,13 +281,18 @@ class TransaksiController extends Controller
 
         if($data->delete()){
             $detail = DetailTransaksiLayanan::where('id_transaksi',$data->id_transaksi);
-            if($detail->delete()){
+            if($detail->exists()){
+                if($detail->delete()){
+                    $res['message'] = "Berhasil dibatalkan!";
+                    return response($res);
+                }
+                else{
+                    $res['message'] = "Gagal dibatalkan!";
+                    return response($res);
+                }
+            }else{
                 $res['message'] = "Berhasil dibatalkan!";
-                return response($res);
-            }
-            else{
-                $res['message'] = "Gagal dibatalkan!";
-                return response($res);
+                    return response($res);
             }
         }
         else{
@@ -298,18 +303,23 @@ class TransaksiController extends Controller
 
     public function hapusProduk($id)
     {
-        $data = Transaksi::where('id',$id)->first();
+        $data = Transaksi::where('id',$id)->first();        
 
         if($data->delete()){
-            $this->updateBarangMasuk($data->id_transaksi);
             $detail = DetailTransaksiProduk::where('id_transaksi',$data->id_transaksi);
-            if($detail->delete()){
+            if($detail->exists()){
+                $this->updateBarangMasuk($data->id_transaksi);
+                if($detail->delete()){
+                    $res['message'] = "Berhasil dibatalkan!";
+                    return response($res);
+                }
+                else{
+                    $res['message'] = "Gagal dibatalkan!";
+                    return response($res);
+                }
+            }else{
                 $res['message'] = "Berhasil dibatalkan!";
-                return response($res);
-            }
-            else{
-                $res['message'] = "Gagal dibatalkan!";
-                return response($res);
+                    return response($res);
             }
         }
         else{
