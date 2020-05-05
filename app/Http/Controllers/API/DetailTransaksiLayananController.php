@@ -84,30 +84,38 @@ class DetailTransaksiLayananController extends Controller
         $id_hewan = $request->input('id_hewan');
         $id_layanan = $request->input('id_layanan');
         $subtotal = $request->input('subtotal');
+        $updated_by = $request->input('updated_by');
 
         $dataDetil = DetailTransaksiLayanan::onlyTrashed()->where('id_transaksi',$id);
         if($dataDetil->exists()){
             $dataDetil->forceDelete();
         }
 
-        $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
+        $transaksi = Transaksi::where('id_transaksi',$id)->first();
+        $transaksi->updated_by = $updated_by;
 
-        $count = count($data);
-        for($i = 0; $i < $count; $i++){
+        if($transaksi->save()){
+            $data = DetailTransaksiLayanan::where('id_transaksi',$id)->get();
 
-            $data[$i]->id_hewan = $id_hewan;
-            $data[$i]->id_layanan = $id_layanan[$i];
-            $data[$i]->subtotal = $subtotal[$i];
+            $count = count($data);
+            for($i = 0; $i < $count; $i++){
 
-            if($data[$i]->save()){
-                $res['message'] = "Berhasil diubah!";
-                // return response($res);
-            }else{
-                $res['message'] = "Gagal diubah!";
-                // return response($res);
+                $data[$i]->id_hewan = $id_hewan;
+                $data[$i]->id_layanan = $id_layanan[$i];
+                $data[$i]->subtotal = $subtotal[$i];
+
+                if($data[$i]->save()){
+                    $res['message'] = "Berhasil diubah!";
+                    // return response($res);
+                }else{
+                    $res['message'] = "Gagal diubah!";
+                    // return response($res);
+                }
             }
+            $this->updateTotalHarga($id);
+        }else{
+            $res['message'] = "Gagal diubah!";
         }
-        $this->updateTotalHarga($id);
         return response($res);
     }
 

@@ -112,6 +112,7 @@ class DetailTransaksiProdukController extends Controller
         $id_produk = $request->input('id_produk');
         $jumlah = $request->input('jumlah');
         $subtotal = $request->input('subtotal');
+        $updated_by = $request->input('updated_by');
 
         $this->updateBarangMasuk($id);
 
@@ -119,26 +120,34 @@ class DetailTransaksiProdukController extends Controller
         if($dataDetil->exists()){
             $dataDetil->forceDelete();
         }
-        $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
 
-        $count = count($data);
-        for($i = 0; $i < $count; $i++){
+        $transaksi = Transaksi::where('id_transaksi',$id)->first();
+        $transaksi->updated_by = $updated_by;
 
-            $data[$i]->id_hewan = $id_hewan;
-            $data[$i]->id_produk = $id_produk[$i];
-            $data[$i]->jumlah = $jumlah[$i];
-            $data[$i]->subtotal = $subtotal[$i];
+        if($transaksi->save()){
+            $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
 
-            if($data[$i]->save()){
-                $res['message'] = "Berhasil diubah!";
-                // return response($res);
-            }else{
-                $res['message'] = "Gagal diubah!";
-                // return response($res);
+            $count = count($data);
+            for($i = 0; $i < $count; $i++){
+
+                $data[$i]->id_hewan = $id_hewan;
+                $data[$i]->id_produk = $id_produk[$i];
+                $data[$i]->jumlah = $jumlah[$i];
+                $data[$i]->subtotal = $subtotal[$i];
+
+                if($data[$i]->save()){
+                    $res['message'] = "Berhasil diubah!";
+                    // return response($res);
+                }else{
+                    $res['message'] = "Gagal diubah!";
+                    // return response($res);
+                }
             }
+            $this->updateBarangKeluar($id);
+            $this->updateTotalHarga($id);
+        }else{
+            $res['message'] = "Gagal diubah!";
         }
-        $this->updateBarangKeluar($id);
-        $this->updateTotalHarga($id);
         return response($res);
     }
 
@@ -148,6 +157,7 @@ class DetailTransaksiProdukController extends Controller
         $id_produk = $request->input('id_produk');
         $jumlah = $request->input('jumlah');
         $subtotal = $request->input('subtotal');
+        $updated_by = $request->input('updated_by');
 
         $this->updateBarangMasuk($id);
 
@@ -155,25 +165,33 @@ class DetailTransaksiProdukController extends Controller
         if($dataDetil->exists()){
             $dataDetil->forceDelete();
         }
-        $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
 
-        $count = count($data);
-        for($i = 0; $i < $count; $i++){
+        $transaksi = Transaksi::where('id_transaksi',$id)->first();
+        $transaksi->updated_by = $updated_by;
 
-            $data[$i]->id_hewan = $id_hewan;
-            $data[$i]->id_produk = $id_produk[$i];
-            $data[$i]->jumlah = $jumlah[$i];
-            $data[$i]->subtotal = $subtotal[$i];
+        if($transaksi->save()){
+            $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
 
-            if($data[$i]->save()){
-                $res['message'] = "Berhasil diubah!";
-                // return response($res);
-            }else{
-                $res['message'] = "Gagal diubah!";
-                // return response($res);
+            $count = count($data);
+            for($i = 0; $i < $count; $i++){
+
+                $data[$i]->id_hewan = $id_hewan;
+                $data[$i]->id_produk = $id_produk[$i];
+                $data[$i]->jumlah = $jumlah[$i];
+                $data[$i]->subtotal = $subtotal[$i];
+
+                if($data[$i]->save()){
+                    $res['message'] = "Berhasil diubah!";
+                    // return response($res);
+                }else{
+                    $res['message'] = "Gagal diubah!";
+                    // return response($res);
+                }
             }
+            $this->updateBarangKeluar($id);
+        }else{
+            $res['message'] = "Gagal diubah!";
         }
-        $this->updateBarangKeluar($id);
         return response($res);
     }
 

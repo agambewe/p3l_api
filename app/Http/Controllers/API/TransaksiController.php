@@ -117,6 +117,7 @@ class TransaksiController extends Controller
         $data->status_layanan = 0;
         $data->tanggal_transaksi = date('Y-m-d');
         $data->updated_at = null;
+        $data->created_by = $cs;
 
         if($data->save()){
             $res['message'] = "Berhasil diproses!";
@@ -144,6 +145,7 @@ class TransaksiController extends Controller
         $data->status_bayar = 0;
         $data->tanggal_transaksi = date('Y-m-d');
         $data->updated_at = null;
+        $data->created_by = $cs;
 
         // $aede = $data->id_transaksi;
         if($data->save()){
