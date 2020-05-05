@@ -25,6 +25,7 @@ class TransaksiSeeder extends Seeder
                     'status_layanan'=>1,
                     'diskon'=>20000,
                     'tanggal_transaksi'=>date("Y-m-d H:i:s"),
+                    'created_by' => 'kouveecs',
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
             ]);
@@ -38,6 +39,7 @@ class TransaksiSeeder extends Seeder
                 'status_layanan'=>1,
                 'diskon'=>10000,
                 'tanggal_transaksi'=>date("Y-m-d H:i:s"),
+                'created_by' => 'kouveecs',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ]);
@@ -47,6 +49,7 @@ class TransaksiSeeder extends Seeder
                 'cs'=> $faker->userName,
                 // 'status_bayar'=>0,
                 'tanggal_transaksi'=>date("Y-m-d H:i:s"),
+                'created_by' => 'kouveecs',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ]);
@@ -58,6 +61,7 @@ class TransaksiSeeder extends Seeder
                 'total_harga'=>$faker->randomElement($array = array ("100000", "150000", "200000", "250000", "105000", "205000")),
                 'status_bayar'=>1,
                 'tanggal_transaksi'=>date("Y-m-d H:i:s"),
+                'created_by' => 'kouveecs',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ]);
@@ -68,6 +72,7 @@ class TransaksiSeeder extends Seeder
                 'status_layanan' => 0,
                 'cs'=> $faker->userName,
                 'tanggal_transaksi'=>date("Y-m-d H:i:s"),
+                'created_by' => 'kouveecs',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
                 ]);
