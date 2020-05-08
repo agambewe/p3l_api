@@ -15,4 +15,8 @@ class Layanan extends Model
 
     use SoftDeletes;
     protected $dates =['deleted_at'];
+
+    public function ukuranHewan(){
+        return $this->belongsTo(UkuranHewan::class, 'id_ukuran', 'id');
+    }
 }

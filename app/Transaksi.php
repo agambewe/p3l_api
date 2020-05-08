@@ -21,6 +21,10 @@ class Transaksi extends Model
     use SoftDeletes;
     protected $dates =['deleted_at'];
 
+    public function detailLayanan(){
+        return $this->hasMany(DetailTransaksiLayanan::class, 'id_transaksi', 'id_transaksi');
+    }
+
     // public function details()
     // {
     //     return $this->hasMany('App\Models\DetailTransaksiLayanan');
