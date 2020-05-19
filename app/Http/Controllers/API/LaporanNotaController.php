@@ -47,28 +47,44 @@ class LaporanNotaController extends Controller
     {
         $filename = 'NOTA-'.$id.'.pdf';
         return $this->notaLayanan($id)
-                ->setOptions([
-                    'isHtml5ParserEnabled' => true, 
-                    'isRemoteEnabled' => true])
+                ->setOptions(['isRemoteEnabled' => TRUE])
                 ->setPaper([0, 0, 600, 800])
                 ->download($filename);
     }
     
-    // public function notaLayanan($id_transaksi)
-    // {
-    //     $transaksi = Transaksi::where('id_transaksi', $id_transaksi)->get();
-    //     return $this->buatNota($data, 'notaLayanan');
-    // }
+    public function notaProduk($id)
+    {
+        $transaksi = Transaksi::where('id_transaksi', $id)->first();
+        $detail = DetailTransaksiProduk::with(['hewan','produk'])
+                    ->where('id_transaksi', $id)->get();
+        $hewan = Hewan::with(['customer','jenisHewan'])
+                    ->where('id', $detail[0]->id_hewan)->first();
+        $produk = Layanan::where('id', $detail[0]->produk->id_produk)->first();
 
-    // public function buatNota($data, $report)
-    // {
-    //     $fileName = $report;
-    //     $viewName = 'nota.' . $report;
-    //     $json = json_encode($data);
-    //     view()->share(['data' => json_decode($json)]);
-    //     $pdf = PDF::loadView($viewName);
-    //     $pdf->setPaper([0, 0, 600, 800])->save(public_path('/pdf/') . '/' . $fileName . '.pdf');
-    //     $path = $fileName . '.pdf';
-    //     return response()->json(['status' => 200, 'path' => $path]);
-    // }
+        $pdf = PDF::loadview('nota.produk',
+                        [
+                            'transaksi'=>$transaksi,
+                            'details'=>$detail,
+                            'hewan'=>$hewan,
+                            'produk'=>$produk
+                        ]);
+        return $pdf;
+    }
+
+    public function notaProdukShow($id)
+    {
+        return $this->notaProduk($id)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->stream();
+    }
+
+    public function notaProdukDownload($id)
+    {
+        $filename = 'NOTA-'.$id.'.pdf';
+        return $this->notaProduk($id)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->download($filename);
+    }
 }
