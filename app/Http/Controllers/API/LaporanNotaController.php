@@ -9,9 +9,12 @@ use PDF;
 use Dompdf\Options;
 use App\Hewan;
 use App\Layanan;
+use App\Supplier;
 use App\Transaksi;
-use App\DetailTransaksiLayanan;
+use App\OrderRestock;
+use App\DetailOrderRestock;
 use App\DetailTransaksiProduk;
+use App\DetailTransaksiLayanan;
 
 class LaporanNotaController extends Controller
 {
@@ -83,6 +86,41 @@ class LaporanNotaController extends Controller
     {
         $filename = 'NOTA-'.$id.'.pdf';
         return $this->notaProduk($id)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->download($filename);
+    }
+
+    public function notaRestock($id)
+    {
+        $po = OrderRestock::where('id_po', $id)->first();
+        $detail = DetailOrderRestock::with(['supplier','produk'])
+                    ->where('id_po', $id)->get();
+        $supplier = Supplier::where('id', $detail[0]->id_supplier)->first();
+        $produk = Layanan::where('id', $detail[0]->produk->id_produk)->first();
+
+        $pdf = PDF::loadview('nota.restock',
+                        [
+                            'po'=>$po,
+                            'details'=>$detail,
+                            'supplier'=>$supplier,
+                            'produk'=>$produk
+                        ]);
+        return $pdf;
+    }
+
+    public function notaRestockShow($id)
+    {
+        return $this->notaRestock($id)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->stream();
+    }
+
+    public function notaRestockDownload($id)
+    {
+        $filename = 'NOTA-'.$id.'.pdf';
+        return $this->notaRestock($id)
                 ->setOptions(['isRemoteEnabled' => TRUE])
                 ->setPaper([0, 0, 600, 800])
                 ->download($filename);

@@ -149,7 +149,8 @@ class OrderRestockController extends Controller
     }
 
     public function cariPo($idPo){
-        $data = OrderRestock::where('id_po',$idPo)->first();
+        $data = OrderRestock::with(['supplier'])
+                            ->where('id_po',$idPo)->first();
 
         if (is_null($data)){
             $res['message'] = "Tidak ditemukan!";

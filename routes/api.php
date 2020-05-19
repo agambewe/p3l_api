@@ -101,6 +101,9 @@ Route::get('/nota/layanan/download/{id}', 'API\LaporanNotaController@notaLayanan
 Route::get('/nota/produk/lihat/{id}', 'API\LaporanNotaController@notaProdukShow');
 Route::get('/nota/produk/download/{id}', 'API\LaporanNotaController@notaProdukDownload');
 
+Route::get('/nota/pengadaan/lihat/{id}', 'API\LaporanNotaController@notaRestockShow');
+Route::get('/nota/pengadaan/download/{id}', 'API\LaporanNotaController@notaRestockDownload');
+
 //transaksi produk
 Route::get('/order-produk', 'API\TransaksiController@tprodukCS');
 Route::delete('/order-produk/{id}', 'API\TransaksiController@hapusProduk');
