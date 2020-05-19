@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use PDF;
+use Dompdf\Options;
 use App\Hewan;
 use App\Layanan;
 use App\Transaksi;
@@ -37,6 +38,7 @@ class LaporanNotaController extends Controller
     public function notaLayananShow($id)
     {
         return $this->notaLayanan($id)
+                ->setOptions(['isRemoteEnabled' => TRUE])
                 ->setPaper([0, 0, 600, 800])
                 ->stream();
     }
@@ -45,6 +47,9 @@ class LaporanNotaController extends Controller
     {
         $filename = 'NOTA-'.$id.'.pdf';
         return $this->notaLayanan($id)
+                ->setOptions([
+                    'isHtml5ParserEnabled' => true, 
+                    'isRemoteEnabled' => true])
                 ->setPaper([0, 0, 600, 800])
                 ->download($filename);
     }
