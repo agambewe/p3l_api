@@ -89,7 +89,7 @@
 		</div>
 	</div>
 	<hr>
-		<h3 style='text-align:center'><?php echo "Jasa Layanan" ?></h3>
+		<h3 style='text-align:center'><?php echo "Produk" ?></h3>
 	<hr>
 
 	<table class='table table-bordered' style='width: 100%'>
@@ -107,13 +107,14 @@
 		<tbody>
 			<tr>
 				<td  style='text-align:center'><?php echo $no ?></td>
-				<td  style='text-align:center' ><?php echo $d->layanan->nama; 
-													echo " " ;
-													echo $hewan?$hewan->jenisHewan->nama:"";
-													echo " " ;
-													echo $layanan->ukuranHewan->nama?></td>
-				<td  style='text-align:center'><?php echo rupiah($d->layanan->harga) ?></td>
-				<td  style='text-align:center'><?php echo 1 ?></td>
+				<td  style='text-align:center' ><?php echo $d->produk->nama; 
+													// echo " " ;
+													// echo $hewan?$hewan->jenisHewan->nama:"";
+													// echo " " ;
+													// echo $layanan->ukuranHewan->nama
+													?></td>
+				<td  style='text-align:center'><?php echo rupiah($d->produk->harga) ?></td>
+				<td  style='text-align:center'><?php echo $d->jumlah ?></td>
 				<td  style='text-align:center'><?php echo rupiah($d->subtotal) ?></td>
 			</tr>
 		<?php $no++; ?>
