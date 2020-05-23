@@ -94,6 +94,10 @@ Route::get('/order-restock/{id}', 'API\OrderRestockController@cari');
 Route::get('/order-restock/po/{idPo}', 'API\OrderRestockController@cariPo');
 Route::post('/order-restock/selesai-restock/{id}', 'API\OrderRestockController@selesaiRestock');
 
+//LAPORAN
+Route::get('/laporan/pengadaan/tampil_pdf/{tahun}', 'API\LaporanPengadaanController@tampil_pdf');
+Route::get('/laporan/pengadaan/cetak_pdf/{tahun}', 'API\LaporanPengadaanController@cetak_pdf');
+
 //NOTA
 Route::get('/nota/layanan/lihat/{id}', 'API\LaporanNotaController@notaLayananShow');
 Route::get('/nota/layanan/download/{id}', 'API\LaporanNotaController@notaLayananDownload');

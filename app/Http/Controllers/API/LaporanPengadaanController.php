@@ -10,44 +10,49 @@ use Carbon\Carbon;
 use App\Produk;
 use App\OrderRestock;
 use App\DetailOrderRestock;
-use App\Suplier;
 
 class LaporanPengadaanController extends Controller
 {
-    public function cetak_pdf($tahun)
+    public function laporanPengadaan_pdf($tahun)
     {
-        // get Sekarang buat tanggal transaksi
         $dt = Carbon::now()->translatedFormat('d F Y');
-        $pengadaan = DetailOrderRestock::
-        select(DB::raw('sum(subtotal) as subtotal'),DB::raw('DATE_FORMAT(tanggal_restock, "%M") as bulan'))
+        $pengadaan = OrderRestock::whereYear('tanggal_restock', '=' , $tahun)
+                         ->first();
+        $detail = DetailOrderRestock::select(DB::raw('DATE_FORMAT(tanggal_restock, "%Y") as tahuntampil'),DB::raw('DATE_FORMAT(tanggal_restock, "%M") as bulan'),DB::raw('sum(total_bayar) as total_bayar'))
         ->join('order_restock AS T','T.id_po','=','detail_order_restock.id_po')
         ->join('produk AS P','P.id','=','detail_order_restock.id_produk')
-        //Tahun Sesuai input
         ->whereYear('tanggal_restock','=',$tahun)
-        //Grouping berdasarkan bulan
+        ->groupBy('total_bayar')
+        ->groupBy('tahuntampil')
         ->groupBy('bulan')
         ->orderBy('tanggal_restock','asc')
         ->get();
-        $pdf = PDF::loadview('laporan.pengadaan', ['pengadaan' => $pengadaan]);
-        return $pdf->download('laporan-pengadaan-pdf.pdf', compact('dt','pengadaan','tahun'));
+         $produk = Produk::all();
+        $pdf = PDF::loadview('laporan.pengadaan',
+            [
+                'pengadaan'=>$pengadaan,
+                'details'=>$detail,
+                'produk'=>$produk
+            ]); 
+        return $pdf;
     }
 
     public function tampil_pdf($tahun)
     {
-        // get Sekarang buat tanggal transaksi
-        $dt = Carbon::now()->translatedFormat('d F Y');
-        $pengadaan = DetailOrderRestock::
-        select(DB::raw('sum(subtotal) as subtotal'),DB::raw('DATE_FORMAT(tanggal_restock, "%M") as bulan'))
-        ->join('order_restock AS T','T.id_po','=','detail_order_restock.id_po')
-        ->join('produk AS P','P.id','=','detail_order_restock.id_produk')
-        //Tahun Sesuai input
-        ->whereYear('tanggal_restock','=',$tahun)
-        //Grouping berdasarkan bulan
-        ->groupBy('bulan')
-        ->orderBy('tanggal_restock','asc')
-        ->get();
-        $pdf = PDF::loadview('laporan.pengadaan', ['pengadaan' => $pengadaan]);
-        return $pdf->stream('laporan-pengadaan-pdf.pdf', compact('dt','pengadaan','tahun'));
+        $filename = 'LAPORAN-'.$tahun.'.pdf';
+        return $this->laporanPengadaan_pdf($tahun)
+        ->setOptions(['isRemoteEnabled' => TRUE])
+        ->setPaper([0, 0, 600, 800])
+        ->stream($filename);
+    }
+
+    public function cetak_pdf($tahun)
+    {
+        $filename = 'LAPORAN-'.$tahun.'.pdf';
+        return $this->laporanPengadaan_pdf($tahun)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->download($filename);
     }
     
 }
