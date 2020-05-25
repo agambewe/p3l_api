@@ -49,8 +49,8 @@
 		<hr>
 	</center>
 		<h1>Laporan Pengadaan Bulanan</h1>        
-    	<p align="left" class="font"><b>Bulan : <?php echo  \Carbon\Carbon::parse($bulan ?? '')->translatedFormat('M') ?></b></p>
-		<p align="left" class="font"> <b> Tahun : <?php echo  \Carbon\Carbon::parse($tahun ?? '')->translatedFormat('Y') ?> </b></p>
+        <p align="left" class="font"> <b> Bulan : <?php echo  \Carbon\Carbon::parse($pengadaan->tanggal_restock)->translatedFormat('F') ?> </b></p>
+    	<p align="left" class="font"> <b> Tahun : <?php echo  \Carbon\Carbon::parse($pengadaan->tanggal_restock)->translatedFormat('Y') ?> </b></p>
 	<table  style='width: 100%' align="center">
 		<thead>
 			<tr>
@@ -61,7 +61,6 @@
 		</thead>
     	<?php $no=1; ?>
         <?php $hasil_final = 0 ?>
-        <?php $total = 0 ?>
 		<?php foreach($details as $p): ?>
 		<tr>
 			<td  style='text-align:center'><?php echo $no ?></td>
@@ -70,14 +69,13 @@
     	</tr>
 		
 		<?php $no++; ?>
-        <?php $hasil_final = $p->jumlah * $p->harga?>
-        <?php $total = $total + $hasil_final ?></b></p>
+        <?php $hasil_final = $hasil_final + $p->total_bayar?></b></p>
 		<?php endforeach; ?>
 	</table>
 	<br>
 	<div style='display:flex; text-align:right'>
 		<div class='column'>
-			<p style='text-align:right'> <b> TOTAL : <?php echo rupiah($total)?>
+			<p style='text-align:right'> <b> TOTAL : <?php echo rupiah($hasil_final)?>
 			
 		</div>
 	</div>
