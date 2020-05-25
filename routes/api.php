@@ -97,6 +97,8 @@ Route::post('/order-restock/selesai-restock/{id}', 'API\OrderRestockController@s
 //LAPORAN
 Route::get('/laporan/pengadaan/tampil_pdf/{tahun}', 'API\LaporanPengadaanController@tampil_pdf');
 Route::get('/laporan/pengadaan/cetak_pdf/{tahun}', 'API\LaporanPengadaanController@cetak_pdf');
+Route::get('/laporan/pengadaan/tampilBulanan_pdf/{tahun}/{bulan}', 'API\LaporanPengadaanController@tampilBulanan_pdf');
+Route::get('/laporan/pengadaan/cetakBulanan_pdf/{tahun}/{bulan}', 'API\LaporanPengadaanController@cetakBulanan_pdf');
 
 //NOTA
 Route::get('/nota/layanan/lihat/{id}', 'API\LaporanNotaController@notaLayananShow');
