@@ -63,12 +63,13 @@
 		margin-bottom: 50px;
 	}
 
-	.dicetak {
-		/* display:flex;  */
-		text-align:right; 
-		position: static;
-		bottom: 0;
-	}
+	.footer {
+    /* display:flex;  */
+    text-align:right; 
+    bottom: -35;
+    position: absolute;
+    
+  }
 </style>
 <head>
 	<title>Laporan PRODUK terlaris</title>
@@ -123,13 +124,12 @@
 
 	</table>
 	<br>
-	<div class="dicetak">
-		<p>Dicetak tanggal <?php echo \Carbon\Carbon::now()
-								->setTimezone('Asia/Jakarta')
-								->translatedFormat('d F Y') 
-							?></p>
-	</div>
-	
+</div>
+<div class="footer">
+	<p>Dicetak tanggal <?php echo \Carbon\Carbon::now()
+							->setTimezone('Asia/Jakarta')
+							->translatedFormat('d F Y') 
+	?></p>
 </div>
 </body>
 </html>
