@@ -63,14 +63,12 @@ class LaporanNotaController extends Controller
                     ->where('id_transaksi', $id)->get();
         $hewan = Hewan::with(['customer','jenisHewan'])
                     ->where('id', $detail[0]->id_hewan)->first();
-        $produk = Layanan::where('id', $detail[0]->produk->id_produk)->first();
 
         $pdf = PDF::loadview('nota.produk',
                         [
                             'transaksi'=>$transaksi,
                             'details'=>$detail,
-                            'hewan'=>$hewan,
-                            'produk'=>$produk
+                            'hewan'=>$hewan
                         ]);
         return $pdf;
     }
@@ -98,14 +96,12 @@ class LaporanNotaController extends Controller
         $detail = DetailOrderRestock::with(['supplier','produk'])
                     ->where('id_po', $id)->get();
         $supplier = Supplier::where('id', $detail[0]->id_supplier)->first();
-        $produk = Layanan::where('id', $detail[0]->produk->id_produk)->first();
 
         $pdf = PDF::loadview('nota.restock',
                         [
                             'po'=>$po,
                             'details'=>$detail,
-                            'supplier'=>$supplier,
-                            'produk'=>$produk
+                            'supplier'=>$supplier
                         ]);
         return $pdf;
     }
