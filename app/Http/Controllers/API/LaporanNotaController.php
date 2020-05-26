@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use DB;
 use PDF;
 use Dompdf\Options;
@@ -111,15 +112,23 @@ class LaporanNotaController extends Controller
 
     public function notaRestockShow($id)
     {
+        $filename = 'NOTA-'.$id.'.pdf';
         return $this->notaRestock($id)
                 ->setOptions(['isRemoteEnabled' => TRUE])
                 ->setPaper([0, 0, 600, 800])
-                ->stream();
+                // ->save(public_path('/pdf/').$filename)
+                ->stream($filename);
     }
 
     public function notaRestockDownload($id)
     {
         $filename = 'NOTA-'.$id.'.pdf';
+        // $output = $this->notaRestock($id)->output();
+
+        // return new Response($output, 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' =>  'inline; filename="myfilename.pdf"',
+        // ]);
         return $this->notaRestock($id)
                 ->setOptions(['isRemoteEnabled' => TRUE])
                 ->setPaper([0, 0, 600, 800])
