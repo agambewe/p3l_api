@@ -71,7 +71,7 @@
 	}
 </style>
 <head>
-	<title>LAPORAN PENDAPATAN TAHUNAN </title>
+	<title>LAPORAN PENDAPATAN BULANAN</title>
 	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 </head>
 <body>
@@ -87,40 +87,78 @@
 	<!-- <img src="{{ public_path('img/kop.jpg') }}" > -->
 	@php use App\Custom\Archivos; @endphp <img src="{{Archivos::imagenABase64('assets/img/kop.jpg')}}" width="100%" >
 	<hr>
-	<h3>LAPORAN PENGADAAN TAHUNAN   </h3>
+	<h3>LAPORAN PENDAPATAN BULANAN   </h3>
+	<?php echo "Bulan : ",$bulan; ?>
+	<br><br>
 	<?php echo "Tahun : ",$tahun; ?>
+	
 	<br>
 	<table class='table table-bordered' style='width: 100%'>
 		<thead>
 			<tr>
 				<th>No</th>
-				<th>Bulan</th>
-				<th>Total</th>
+				<th>Nama Produk</th>
+				<th>Harga</th>
 			</tr>
 		</thead>
-		
+		<br>
+
 		<?php  
+			$no=1; 
+			$tempP=0;
+
+			for($a=0; $a < count($data); $a++)
+			{
+				print "<tr>";
+				// penomeran otomatis
+				print "<td>".$no."</td>";
+				print "<td>".$data[$a]->nama."</td>";
+				print "<td>".rupiah($data[$a]->harga)."</td>";
+				$tempP=$tempP+$data[$a]->harga;
+				print "</tr>";
+				$no++;
+				
+			}
+			
+  		?> 
+		  </table>
+  <div style='display:flex; text-align:right'>
+		<div class='column'>
+			<p><strong>TOTAL : <?php 
+							echo rupiah($tempP);
+							?>
+			</strong></p>
+		</div>
+	</div>
+  	<table class='table table-bordered' style='width: 100%'>
+		<thead>
+			<tr>
+				<th>No</th>
+				<th>Nama Layanan</th>
+				<th>Harga</th>
+			</tr>
+		</thead>
+		<br>
+		
+	<br>
+	<?php  
   $no=1; 
-$temp=0;
+  $temp=0;
    for($a=0; $a < count($data); $a++)
    {
     print "<tr>";
-    // penomeran otomatis
+
 	print "<td>".$no."</td>";
-	print "<td>".$data[$a]->Bulan."</td>";
-	print "<td>".rupiah($data[$a]->total_bayar)."</td>";
-	$temp=$temp+$data[$a]->total_bayar;
-
-
-	
+	print "<td>".$dLananan[$a]->nama."</td>";
+	print "<td>".rupiah($dLananan[$a]->harga)."</td>";
+	$temp=$temp+$dLananan[$a]->harga;
     print "</tr>";
     $no++;
    }
   ?>
+  </table>
 
-	</table>
-	<br>
-	<div style='display:flex; text-align:right'>
+<div style='display:flex; text-align:right;'>
 		<div class='column'>
 			<p><strong>TOTAL : <?php 
 							echo rupiah($temp);
@@ -128,7 +166,6 @@ $temp=0;
 			</strong></p>
 		</div>
 	</div>
-
 	<div class="dicetak">
 		<p>Dicetak tanggal <?php echo \Carbon\Carbon::now()
 								->setTimezone('Asia/Jakarta')

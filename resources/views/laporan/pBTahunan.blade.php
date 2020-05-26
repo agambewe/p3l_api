@@ -87,7 +87,7 @@
 	<!-- <img src="{{ public_path('img/kop.jpg') }}" > -->
 	@php use App\Custom\Archivos; @endphp <img src="{{Archivos::imagenABase64('assets/img/kop.jpg')}}" width="100%" >
 	<hr>
-	<h3>LAPORAN PENGADAAN TAHUNAN   </h3>
+	<h3>LAPORAN PENDAPATAN TAHUNAN   </h3>
 	<?php echo "Tahun : ",$tahun; ?>
 	<br>
 	<table class='table table-bordered' style='width: 100%'>
@@ -95,6 +95,8 @@
 			<tr>
 				<th>No</th>
 				<th>Bulan</th>
+				<th>Produk</th>
+				<th>Jasa Layanan</th>
 				<th>Total</th>
 			</tr>
 		</thead>
@@ -108,8 +110,10 @@ $temp=0;
     // penomeran otomatis
 	print "<td>".$no."</td>";
 	print "<td>".$data[$a]->Bulan."</td>";
-	print "<td>".rupiah($data[$a]->total_bayar)."</td>";
-	$temp=$temp+$data[$a]->total_bayar;
+	print "<td>".rupiah($data[$a]->Produk)."</td>";
+	print "<td>".rupiah($data[$a]->Layanan)."</td>";
+	print "<td>".rupiah($data[$a]->Total)."</td>";
+	$temp=$temp+$data[$a]->Total;
 
 
 	
