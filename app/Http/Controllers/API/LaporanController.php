@@ -60,7 +60,7 @@ class LaporanController extends Controller
 
     public function tampil_pdf($tahun)
     {
-        $filename = 'LAPORAN-'.$tahun.'.pdf';
+        $filename = 'LAPORAN-PENGADAAN-TAHUNAN-'.$tahun.'.pdf';
         return $this->laporanPengadaan_pdf($tahun)
         ->setOptions(['isRemoteEnabled' => TRUE])
         ->setPaper([0, 0, 600, 800])
@@ -69,7 +69,7 @@ class LaporanController extends Controller
 
     public function cetak_pdf($tahun)
     {
-        $filename = 'LAPORAN-'.$tahun.'.pdf';
+        $filename = 'LAPORAN-PENGADAAN-TAHUNAN'.$tahun.'.pdf';
         return $this->laporanPengadaan_pdf($tahun)
                 ->setOptions(['isRemoteEnabled' => TRUE])
                 ->setPaper([0, 0, 600, 800])
@@ -138,7 +138,7 @@ class LaporanController extends Controller
 
     public function tampilBulanan_pdf($tahun,$bulan)
     {
-        $filename = 'LAPORAN-'.$tahun.'-'.$bulan.'.pdf';
+        $filename = 'LAPORAN-PENGADAAN-BULANAN-'.$tahun.'-'.$bulan.'.pdf';
         return $this->laporanPengadaanBulanan_pdf($tahun,$bulan)
         ->setOptions(['isRemoteEnabled' => TRUE])
         ->setPaper([0, 0, 600, 800])
@@ -147,7 +147,7 @@ class LaporanController extends Controller
 
     public function cetakBulanan_pdf($tahun,$bulan)
     {
-        $filename = 'LAPORAN-'.$tahun.'-'.$bulan.'.pdf';
+        $filename = 'LAPORAN-PENGADAAN-BULANAN-'.$tahun.'-'.$bulan.'.pdf';
         return $this->laporanPengadaanBulanan_pdf($tahun,$bulan)
                 ->setOptions(['isRemoteEnabled' => TRUE])
                 ->setPaper([0, 0, 600, 800])
@@ -194,12 +194,21 @@ class LaporanController extends Controller
         return $pdf;
     }
 
-    public function lTerlarisShowa($id)
+    public function lTerlarisShowa($tahun)
     {
-        return $this->LaporanLayananTerlaris($id)
+        $filename = 'LAPORAN-TERLARIS-'.$tahun.'.pdf';
+        return $this->LaporanLayananTerlaris($tahun)
                 ->setOptions(['isRemoteEnabled' => TRUE])
                 ->setPaper([0, 0, 600, 800])
-                ->stream();
+                ->stream($filename);
+    }
+    public function lTerlarisDownload($tahun)
+    {
+        $filename = 'LAPORAN-TERLARIS-'.$tahun.'.pdf';
+        return $this->LaporanLayananTerlaris($tahun)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->download($filename);
     }
 
     //Laporan Produk Terlaris
@@ -243,13 +252,23 @@ class LaporanController extends Controller
 return $pdf;
 }
 
-public function PTerlarisShowa($id)
-{
-    return $this->laporanProdukTerlaris($id)
+public function PTerlarisShowa($tahun)
+{   
+    $filename = 'PRODUK-TERLARIS-'.$tahun.'.pdf';
+    return $this->laporanProdukTerlaris($tahun)
             ->setOptions(['isRemoteEnabled' => TRUE])
             ->setPaper([0, 0, 600, 800])
-            ->stream();
+            ->stream($filename);
 }
+
+public function PTerlarisDownload($tahun)
+    {
+        $filename = 'PRODUK-TERLARIS-'.$tahun.'.pdf';
+        return $this->laporanProdukTerlaris($tahun)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->download($filename);
+    }
 
 //Pendapatan Pendapatan Bulanan
 public function laporanPendapatanProduk($tahun,$bulan){
@@ -305,14 +324,23 @@ public function laporanPendapatanProduk($tahun,$bulan){
     ]);
     return $pdf;
 }
-public function PProdukBulanShow($id,$bulan)
+public function PProdukBulanShow($tahun,$bulan)
 {
-    return $this->laporanPendapatanProduk($id,$bulan)
+    $filename = 'LAPORAN-PENGADAAN-BULANAN-'.$tahun.'-'.$bulan.'.pdf';
+    return $this->laporanPendapatanProduk($tahun,$bulan)
             ->setOptions(['isRemoteEnabled' => TRUE])
             ->setPaper([0, 0, 600, 800])
-            ->stream();
+            ->stream($filename);
 }
 
+public function PProdukBulanDownload($tahun,$bulan)
+    {
+        $filename = 'LAPORAN-PENGADAAN-BULANAN-'.$tahun.'-'.$bulan.'.pdf';
+        return $this->laporanPendapatanProduk($tahun,$bulan)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->download($filename);
+    }
 //Laporan Pendapatan Tahunan
 public function laporanPendapatanTahunan($tahun){
     $data = DB::select("
@@ -390,14 +418,22 @@ public function laporanPendapatanTahunan($tahun){
     ]);
     return $pdf;
 }
-public function PendapatanTahunanShow($id)
+public function PendapatanTahunanShow($tahun)
 {
-    return $this->laporanPendapatanTahunan($id)
+    $filename = 'PENDAPATAN-TAHUNAN-'.$tahun.'.pdf';
+    return $this->laporanPendapatanTahunan($tahun)
             ->setOptions(['isRemoteEnabled' => TRUE])
             ->setPaper([0, 0, 600, 800])
             ->stream();
 }
-
+public function PendapatanTahunanDownload($tahun)
+    {
+        $filename = 'PENDAPATAN-TAHUNAN-'.$tahun.'.pdf';
+        return $this->laporanPendapatanTahunan($tahun)
+                ->setOptions(['isRemoteEnabled' => TRUE])
+                ->setPaper([0, 0, 600, 800])
+                ->download($filename);
+    }
 
 }
 

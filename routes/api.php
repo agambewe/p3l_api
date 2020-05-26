@@ -102,10 +102,16 @@ Route::get('/laporan/pengadaan/tampilBulanan_pdf/{tahun}/{bulan}', 'API\LaporanC
 Route::get('/laporan/pengadaan/cetakBulanan_pdf/{tahun}/{bulan}', 'API\LaporanController@cetakBulanan_pdf');
 
 Route::get('/laporan/layanan-terlaris/{tahun}', 'API\LaporanController@lTerlarisShowa');
+Route::get('/laporan/layanan-terlaris/download/{tahun}', 'API\LaporanController@lTerlarisDownload');
+
 Route::get('/laporan/produk-terlaris/{tahun}', 'API\LaporanController@PTerlarisShowa');
+Route::get('/laporan/produk-terlaris/download/{tahun}', 'API\LaporanController@PTerlarisDownload');
 
 Route::get('/laporan/pendapatan-bulan/{tahun}/{bulan}','API\LaporanController@PProdukBulanShow');
+Route::get('/laporan/pendapatan-bulan/download/{tahun}/{bulan}','API\LaporanController@PProdukBulanDownload');
+
 Route::get('/laporan/pendapatan-tahun/{tahun}','API\LaporanController@PendapatanTahunanShow');
+Route::get('/laporan/pendapatan-tahun/download/{tahun}','API\LaporanController@PendapatanTahunanDownload');
 
 //NOTA
 Route::get('/nota/layanan/lihat/{id}', 'API\LaporanNotaController@notaLayananShow');
