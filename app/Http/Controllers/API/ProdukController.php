@@ -117,4 +117,20 @@ class ProdukController extends Controller
             return response($data);
         }
     }
+
+    public function produkSortByHargaDesc(){
+        return DB::select('SELECT * FROM `produk` ORDER by harga DESC');
+    }
+
+    public function produkSortByHargaAsc(){
+        return DB::select('SELECT * FROM `produk` ORDER by harga ASC');
+    }
+
+    public function produkSortByStokAsc(){
+        return DB::select('SELECT * FROM `produk` ORDER by stok ASC');
+    }
+
+    public function produkSortByStokDesc(){
+        return DB::select('SELECT * FROM `produk` ORDER by stok DESC');
+    }
 }

@@ -163,3 +163,9 @@ Route::get('/detail-order-restock/po/{id}', 'API\DetailOrderRestockController@ca
 //batal atau hapus detail
 Route::post('/detail-order-restock/po/{id}', 'API\DetailOrderRestockController@hapusPo');
 Route::get('/detail-order-restock/restore/{id}', 'API\DetailOrderRestockController@restoreList');
+
+//SortBy
+Route::get('/produk-stok-desc', 'API\ProdukController@produkSortByStokDesc');
+Route::get('/produk-stok-asc', 'API\ProdukController@produkSortByStokAsc');
+Route::get('/produk-harga-asc', 'API\ProdukController@produkSortByHargaAsc');
+Route::get('/produk-harga-desc', 'API\ProdukController@produkSortByHargaDesc');
