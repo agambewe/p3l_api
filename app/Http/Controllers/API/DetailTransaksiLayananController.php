@@ -214,4 +214,29 @@ class DetailTransaksiLayananController extends Controller
             return response($res);
         }
     }
+    //edit android
+    public function ubahId(Request $request, $id)
+    {
+        $id_hewan = $request->input('id_hewan');
+        $id_layanan = $request->input('id_layanan');
+        $subtotal = $request->input('subtotal');
+
+        $data = DetailTransaksiLayanan::where('id',$id)->first();
+       if($id_hewan!=0){
+        $data->id_hewan = $id_hewan;
+        }
+            $data->id_layanan = $id_layanan;
+            $data->subtotal = $subtotal;
+            $data->updated_at = null;
+
+            if($data->save()){
+                $res['message'] = "Data customer berhasil diubah!";
+                return response($res);
+            }else{
+                $res['message'] = "Data customer gagal diubah!";
+                return response($res);
+            }
+            $this->updateTotalHarga($id);
+        return response($res);
+    }
 }
