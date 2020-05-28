@@ -184,4 +184,28 @@ class DetailOrderRestockController extends Controller
             return response($res);
         }
     }
+    //edit android
+        public function ubahId(Request $request,$id)
+        {
+            $id_po = $request->input('id_po');
+            $id_produk = $request->input('id_produk');
+            $jumlah = $request->input('jumlah');
+   
+            $data = DetailOrderRestock::where('id',$id)->first();
+            
+            $data->id_po = $id_po;
+            $data->id_produk = $id_produk;
+            $data->jumlah = $jumlah;
+                $produk = Produk::where('id',$id_produk)->first();
+            $data->subtotal = $produk->harga*$jumlah;
+            if($data->save()){
+                $res['message'] = "Berhasil dipesan!";
+                $res['id'] = $data->id;
+            }else{
+                $res['message'] = "Gagal dipesan!";
+        
+            }
+            $this->updateTotalHarga($id_po);
+            return response($res);
+        }
 }
