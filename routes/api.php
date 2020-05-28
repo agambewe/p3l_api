@@ -182,3 +182,8 @@ Route::get('/produk-stok-desc', 'API\ProdukController@produkSortByStokDesc');
 Route::get('/produk-stok-asc', 'API\ProdukController@produkSortByStokAsc');
 Route::get('/produk-harga-asc', 'API\ProdukController@produkSortByHargaAsc');
 Route::get('/produk-harga-desc', 'API\ProdukController@produkSortByHargaDesc');
+//edit android
+Route::post('/detail-transaksi-layanan/saya/{id}', 'API\DetailTransaksiLayananController@ubahId');
+Route::post('/detail-transaksi-produk/saya/{id}', 'API\DetailTransaksiProdukController@ubahId');
+Route::post('/detail-order-restock/saya/{id}', 'API\DetailOrderRestockController@ubahId');
+Route::get('/detail-order-restock/poa/{id}', 'API\OrderRestockController@cariPoa');
