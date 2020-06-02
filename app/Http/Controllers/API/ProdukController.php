@@ -7,12 +7,23 @@ use Illuminate\Http\Request;
 use DB;
 use App\Produk;
 
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
+
 class ProdukController extends Controller
 {
     public function produkMinimal(){
         // return Produk::where('stok','<=','minimal')
         //                 ->get();
         return DB::select('SELECT * FROM `produk` WHERE stok<=minimal');
+        // $produk = DB::select('SELECT * FROM `produk` WHERE stok<=minimal');
+        // $count = count($produk);
+        // for($i = 0; $i < $count; $i++){
+        //     $res[] = $produk[$i]->nama;
+        // }
+        // return response($res);
     }
     
     public function tampil(){
@@ -118,6 +129,53 @@ class ProdukController extends Controller
         }
     }
 
+    public function notifMinimal(){
+        $tokens = ['c--bohH5nK-wfhN-7fTOJW:APA91bHjcV8BE9XwaQP3gwdKG9LgypaRsz15LvGkvRjI3B6gse7CR2FSkqN6UxtYF3tqBzj16LKKnX7NjZwg-bm4WrxPyLJaBfqoVMzJFtKeHXmXicBsZyehgD5FdiRR2XqNweHffj_B'];
+	
+        $header = [
+            'Authorization: Key=' . env('FCM_SERVER_KEY'),
+            'Content-Type: Application/json'
+        ];
+
+        $produk = DB::select('SELECT * FROM `produk` WHERE stok<=minimal');
+        $count = count($produk);
+        for($i = 0; $i < $count; $i++){
+            // $res[] = ;
+            $msg = [
+                'title' => 'Peringatan!',
+                'body' => 'Stok produk '.$produk[$i]->nama.' hampir habis..',
+                // 'icon' => 'img/icon.png',
+                // 'image' => 'img/d.png',
+            ];
+    
+            $payload = [
+                'registration_ids' 	=> $tokens,
+                'data'				=> $msg
+            ];
+    
+            $curl = curl_init();
+    
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode( $payload ),
+                CURLOPT_HTTPHEADER => $header
+            ));
+    
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+    
+            curl_close($curl);
+    
+            if ($err) {
+                echo "cURL Error #:" . $err;
+            } else {
+                echo $response;   
+            }
+        }
+    }
+    
     public function produkSortByHargaDesc(){
         return DB::select('SELECT * FROM `produk` ORDER by harga DESC');
     }

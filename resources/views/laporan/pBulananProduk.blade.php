@@ -88,7 +88,7 @@
 	<!-- <img src="{{ public_path('img/kop.jpg') }}" > -->
 	@php use App\Custom\Archivos; @endphp <img src="{{Archivos::imagenABase64('assets/img/kop.jpg')}}" width="100%" >
 	<hr>
-	<h3>LAPORAN PENGADAAN BULANAN   </h3>
+	<h3>LAPORAN PENDAPATAN BULANAN   </h3>
 	<?php echo "Bulan : ",$bulan; ?>
 	<br><br>
 	<?php echo "Tahun : ",$tahun; ?>
@@ -114,8 +114,8 @@
 				// penomeran otomatis
 				print "<td>".$no."</td>";
 				print "<td>".$data[$a]->nama."</td>";
-				print "<td>".rupiah($data[$a]->subtotal)."</td>";
-				$tempP=$tempP+$data[$a]->subtotal;
+				print "<td>".rupiah($data[$a]->harga)."</td>";
+				$tempP=$tempP+$data[$a]->harga;
 				print "</tr>";
 				$no++;
 				
@@ -127,6 +127,42 @@
 		<div class='column'>
 			<p><strong>TOTAL : <?php 
 							echo rupiah($tempP);
+							?>
+			</strong></p>
+		</div>
+	</div>
+  	<table class='table table-bordered' style='width: 100%'>
+		<thead>
+			<tr>
+				<th>No</th>
+				<th>Nama Layanan</th>
+				<th>Harga</th>
+			</tr>
+		</thead>
+		<br>
+		
+	<br>
+	<?php  
+  $no=1; 
+  $temp=0;
+   for($a=0; $a < count($data); $a++)
+   {
+    print "<tr>";
+
+	print "<td>".$no."</td>";
+	print "<td>".$dLananan[$a]->nama."</td>";
+	print "<td>".rupiah($dLananan[$a]->harga)."</td>";
+	$temp=$temp+$dLananan[$a]->harga;
+    print "</tr>";
+    $no++;
+   }
+  ?>
+  </table>
+
+<div style='display:flex; text-align:right;'>
+		<div class='column'>
+			<p><strong>TOTAL : <?php 
+							echo rupiah($temp);
 							?>
 			</strong></p>
 		</div>

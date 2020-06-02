@@ -72,7 +72,7 @@
   }
 </style>
 <head>
-	<title>LAPORAN PENDAPATAN BULANAN</title>
+	<title>LAPORAN PENDAPATAN TAHUNAN </title>
 	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 </head>
 <body>
@@ -88,45 +88,47 @@
 	<!-- <img src="{{ public_path('img/kop.jpg') }}" > -->
 	@php use App\Custom\Archivos; @endphp <img src="{{Archivos::imagenABase64('assets/img/kop.jpg')}}" width="100%" >
 	<hr>
-	<h3>LAPORAN PENGADAAN BULANAN   </h3>
-	<?php echo "Bulan : ",$bulan; ?>
-	<br><br>
+	<h3>LAPORAN PENDAPATAN TAHUNAN   </h3>
 	<?php echo "Tahun : ",$tahun; ?>
-	
 	<br>
 	<table class='table table-bordered' style='width: 100%'>
 		<thead>
 			<tr>
 				<th>No</th>
-				<th>Nama Produk</th>
-				<th>Harga</th>
+				<th>Bulan</th>
+				<th>Produk</th>
+				<th>Jasa Layanan</th>
+				<th>Total</th>
 			</tr>
 		</thead>
-		<br>
-
+		
 		<?php  
-			$no=1; 
-			$tempP=0;
+  $no=1; 
+$temp=0;
+   for($a=0; $a < count($data); $a++)
+   {
+    print "<tr>";
+    // penomeran otomatis
+	print "<td>".$no."</td>";
+	print "<td>".$data[$a]->Bulan."</td>";
+	print "<td>".rupiah($data[$a]->Produk)."</td>";
+	print "<td>".rupiah($data[$a]->Layanan)."</td>";
+	print "<td>".rupiah($data[$a]->Total)."</td>";
+	$temp=$temp+$data[$a]->Total;
 
-			for($a=0; $a < count($data); $a++)
-			{
-				print "<tr>";
-				// penomeran otomatis
-				print "<td>".$no."</td>";
-				print "<td>".$data[$a]->nama."</td>";
-				print "<td>".rupiah($data[$a]->subtotal)."</td>";
-				$tempP=$tempP+$data[$a]->subtotal;
-				print "</tr>";
-				$no++;
-				
-			}
-			
-  		?> 
-		  </table>
-  <div style='display:flex; text-align:right'>
+
+	
+    print "</tr>";
+    $no++;
+   }
+  ?>
+
+	</table>
+	<br>
+	<div style='display:flex; text-align:right'>
 		<div class='column'>
 			<p><strong>TOTAL : <?php 
-							echo rupiah($tempP);
+							echo rupiah($temp);
 							?>
 			</strong></p>
 		</div>

@@ -10,7 +10,7 @@ use App\Layanan;
 class LayananController extends Controller
 {
     public function tampil(){
-        return Layanan::all();
+        return Layanan::with(['ukuranHewan'])->get();
     }
 
     public function tambah(Request $request)

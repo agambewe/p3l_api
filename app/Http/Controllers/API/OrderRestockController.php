@@ -161,4 +161,21 @@ class OrderRestockController extends Controller
             return response($data);
         }
     }
+    public function cariPoa($id){
+        $data = OrderRestock::with(['supplier'])
+                ->join('detail_order_restock AS o', 'order_restock.id_po', '=', 'o.id_po')
+                ->where('order_restock.id_po',$id)
+                ->whereNull('order_restock.deleted_at')
+                ->whereNull('o.deleted_at')
+
+                ->get();
+        if (empty($data)){
+            $res['message'] = "Tidak ditemukan!";
+            return response($res);
+        }else{
+            $res['message'] = "Ditemukan!";
+            $res['value'] = $data;
+            return response($data);
+        }
+    }
 }

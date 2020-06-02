@@ -262,4 +262,46 @@ class DetailTransaksiProdukController extends Controller
             return response($res);
         }
     }
+    //edit android
+     public function ubahId(Request $request, $id)
+     {
+         $id_hewan = $request->input('id_hewan');
+         $id_produk = $request->input('id_produk');
+         $jumlah= $request->input('jumlah');
+         $subtotal = $request->input('subtotal');
+         $this->updateBarangMasuk($id);
+         $data = DetailTransaksiProduk::where('id',$id)->first();
+ 
+        // $count = count($data);
+        $dataDetil = DetailTransaksiProduk::onlyTrashed()->where('id_transaksi',$id);
+        if($dataDetil->exists()){
+            $dataDetil->forceDelete();
+        }
+       // $data = DetailTransaksiProduk::where('id_transaksi',$id)->get();
+ 
+             if($id_hewan!=0){
+                 $data->id_hewan = $id_hewan;
+             }
+             else if($id_hewan!=null){
+                 $data->id_hewan = $id_hewan;
+             }
+             $data->id_produk = $id_produk;
+             $data->jumlah = $jumlah;
+             $data->subtotal = $subtotal;
+             $data->updated_at = null;
+ 
+             if($data->save()){
+                 $res['message'] = "Data customer berhasil diubah!";
+                 return response($res);
+             }else{
+                 $res['message'] = "Data customer gagal diubah!";
+                 return response($res);
+             }
+             $this->updateBarangKeluar($id);
+             $this->updateTotalHarga($id);
+             
+         
+         return response($res);
+     }
+    
 }

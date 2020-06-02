@@ -63,6 +63,7 @@ Route::post('/produk/{id}', 'API\ProdukController@ubah');
 Route::delete('/produk/{id}', 'API\ProdukController@hapus');
 Route::get('/produk/{id}', 'API\ProdukController@cari');
 Route::get('/produk-min', 'API\ProdukController@produkMinimal');
+Route::get('/produk-notif', 'API\ProdukController@notifMinimal');
 
 //layanan
 Route::get('/layanan', 'API\LayananController@tampil');
@@ -95,10 +96,23 @@ Route::get('/order-restock/po/{idPo}', 'API\OrderRestockController@cariPo');
 Route::post('/order-restock/selesai-restock/{id}', 'API\OrderRestockController@selesaiRestock');
 
 //LAPORAN
-Route::get('/laporan/pengadaan/tampil_pdf/{tahun}', 'API\LaporanPengadaanController@tampil_pdf');
-Route::get('/laporan/pengadaan/cetak_pdf/{tahun}', 'API\LaporanPengadaanController@cetak_pdf');
-Route::get('/laporan/pengadaan/tampilBulanan_pdf/{tahun}/{bulan}', 'API\LaporanPengadaanController@tampilBulanan_pdf');
-Route::get('/laporan/pengadaan/cetakBulanan_pdf/{tahun}/{bulan}', 'API\LaporanPengadaanController@cetakBulanan_pdf');
+Route::get('/laporan/pengadaan/tampil_pdf/{tahun}', 'API\LaporanController@tampil_pdf');
+Route::get('/laporan/pengadaan/cetak_pdf/{tahun}', 'API\LaporanController@cetak_pdf');
+
+Route::get('/laporan/pengadaan/tampilBulanan_pdf/{tahun}/{bulan}', 'API\LaporanController@tampilBulanan_pdf');
+Route::get('/laporan/pengadaan/cetakBulanan_pdf/{tahun}/{bulan}', 'API\LaporanController@cetakBulanan_pdf');
+
+Route::get('/laporan/layanan-terlaris/{tahun}', 'API\LaporanController@lTerlarisShowa');
+Route::get('/laporan/layanan-terlaris/download/{tahun}', 'API\LaporanController@lTerlarisDownload');
+
+Route::get('/laporan/produk-terlaris/{tahun}', 'API\LaporanController@PTerlarisShowa');
+Route::get('/laporan/produk-terlaris/download/{tahun}', 'API\LaporanController@PTerlarisDownload');
+
+Route::get('/laporan/pendapatan-bulan/{tahun}/{bulan}','API\LaporanController@PProdukBulanShow');
+Route::get('/laporan/pendapatan-bulan/download/{tahun}/{bulan}','API\LaporanController@PProdukBulanDownload');
+
+Route::get('/laporan/pendapatan-tahun/{tahun}','API\LaporanController@PendapatanTahunanShow');
+Route::get('/laporan/pendapatan-tahun/download/{tahun}','API\LaporanController@PendapatanTahunanDownload');
 
 //NOTA
 Route::get('/nota/layanan/lihat/{id}', 'API\LaporanNotaController@notaLayananShow');
@@ -169,3 +183,8 @@ Route::get('/produk-stok-desc', 'API\ProdukController@produkSortByStokDesc');
 Route::get('/produk-stok-asc', 'API\ProdukController@produkSortByStokAsc');
 Route::get('/produk-harga-asc', 'API\ProdukController@produkSortByHargaAsc');
 Route::get('/produk-harga-desc', 'API\ProdukController@produkSortByHargaDesc');
+//edit android
+Route::post('/detail-transaksi-layanan/saya/{id}', 'API\DetailTransaksiLayananController@ubahId');
+Route::post('/detail-transaksi-produk/saya/{id}', 'API\DetailTransaksiProdukController@ubahId');
+Route::post('/detail-order-restock/saya/{id}', 'API\DetailOrderRestockController@ubahId');
+Route::get('/detail-order-restock/poa/{id}', 'API\OrderRestockController@cariPoa');

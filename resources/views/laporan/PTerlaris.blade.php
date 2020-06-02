@@ -72,7 +72,7 @@
   }
 </style>
 <head>
-	<title>LAPORAN PENDAPATAN BULANAN</title>
+	<title>Laporan PRODUK terlaris</title>
 	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 </head>
 <body>
@@ -88,49 +88,42 @@
 	<!-- <img src="{{ public_path('img/kop.jpg') }}" > -->
 	@php use App\Custom\Archivos; @endphp <img src="{{Archivos::imagenABase64('assets/img/kop.jpg')}}" width="100%" >
 	<hr>
-	<h3>LAPORAN PENGADAAN BULANAN   </h3>
-	<?php echo "Bulan : ",$bulan; ?>
-	<br><br>
+	<h3>LAPORAN PRODUK TERLARIS  </h3>
 	<?php echo "Tahun : ",$tahun; ?>
-	
 	<br>
 	<table class='table table-bordered' style='width: 100%'>
 		<thead>
 			<tr>
 				<th>No</th>
+				<th>Bulan</th>
 				<th>Nama Produk</th>
-				<th>Harga</th>
+				<th>Jumlah Penjualan</th>
 			</tr>
 		</thead>
-		<br>
-
+		
 		<?php  
-			$no=1; 
-			$tempP=0;
+  $no=1; 
 
-			for($a=0; $a < count($data); $a++)
-			{
-				print "<tr>";
-				// penomeran otomatis
-				print "<td>".$no."</td>";
-				print "<td>".$data[$a]->nama."</td>";
-				print "<td>".rupiah($data[$a]->subtotal)."</td>";
-				$tempP=$tempP+$data[$a]->subtotal;
-				print "</tr>";
-				$no++;
-				
-			}
-			
-  		?> 
-		  </table>
-  <div style='display:flex; text-align:right'>
-		<div class='column'>
-			<p><strong>TOTAL : <?php 
-							echo rupiah($tempP);
-							?>
-			</strong></p>
-		</div>
-	</div>
+   for($a=0; $a < count($data); $a++)
+   {
+    print "<tr>";
+    // penomeran otomatis
+	print "<td>".$no."</td>";
+	print "<td>".$data[$a]->Bulan."</td>";
+	print "<td>".$data[$a]->produk."</td>";
+	if($data[$a]->max==0){
+		print "<td style='text-align:center'>"."-"."</td>"; 
+	}else{
+		print "<td style='text-align:center'>".$data[$a]->max."</td>"; 
+	}
+	
+    print "</tr>";
+    $no++;
+   }
+  ?>
+
+	</table>
+	<br>
 </div>
 <div class="footer">
 	<p>Dicetak tanggal <?php echo \Carbon\Carbon::now()
