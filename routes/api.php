@@ -64,6 +64,7 @@ Route::delete('/produk/{id}', 'API\ProdukController@hapus');
 Route::get('/produk/{id}', 'API\ProdukController@cari');
 Route::get('/produk-min', 'API\ProdukController@produkMinimal');
 Route::get('/produk-notif', 'API\ProdukController@notifMinimal');
+Route::get('/produk-token/{token}', 'API\ProdukController@saveToken');
 
 //layanan
 Route::get('/layanan', 'API\LayananController@tampil');

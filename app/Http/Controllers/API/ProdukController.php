@@ -17,7 +17,7 @@ class ProdukController extends Controller
     public function produkMinimal(){
         // return Produk::where('stok','<=','minimal')
         //                 ->get();
-        return DB::select('SELECT * FROM `produk` WHERE stok<=minimal');
+        return DB::select('SELECT * FROM `produk` WHERE stok<minimal');
         // $produk = DB::select('SELECT * FROM `produk` WHERE stok<=minimal');
         // $count = count($produk);
         // for($i = 0; $i < $count; $i++){
@@ -124,56 +124,76 @@ class ProdukController extends Controller
             return response($res);
         }else{
             $res['message'] = "Data produk ditemukan!";
-            $res['value'] = "$data";
+            $res['value'] = $data;
             return response($data);
         }
     }
 
-    public function notifMinimal(){
-        $tokens = ['c--bohH5nK-wfhN-7fTOJW:APA91bHjcV8BE9XwaQP3gwdKG9LgypaRsz15LvGkvRjI3B6gse7CR2FSkqN6UxtYF3tqBzj16LKKnX7NjZwg-bm4WrxPyLJaBfqoVMzJFtKeHXmXicBsZyehgD5FdiRR2XqNweHffj_B'];
-	
-        $header = [
-            'Authorization: Key=' . env('FCM_SERVER_KEY'),
-            'Content-Type: Application/json'
-        ];
+    public function saveToken($token){
+        $query = DB::table('notification')->insert(
+                    ['token' => $token]
+                );
+        $res['status'] = $query;
+        return response($res);
+    }
 
-        $produk = DB::select('SELECT * FROM `produk` WHERE stok<=minimal');
-        $count = count($produk);
-        for($i = 0; $i < $count; $i++){
-            // $res[] = ;
-            $msg = [
-                'title' => 'Peringatan!',
-                'body' => 'Stok produk '.$produk[$i]->nama.' hampir habis..',
-                // 'icon' => 'img/icon.png',
-                // 'image' => 'img/d.png',
+    public function notifMinimal(){
+        $tokens = DB::select('SELECT * FROM `notification`');
+        
+        $count = count($tokens);
+        if($count>=1){
+            for($i = 0; $i < $count; $i++){
+                $tokenId[] =  $tokens[$i]->token;
+            }
+            // $tokens = ['c--bohH5nK-wfhN-7fTOJW:APA91bHjcV8BE9XwaQP3gwdKG9LgypaRsz15LvGkvRjI3B6gse7CR2FSkqN6UxtYF3tqBzj16LKKnX7NjZwg-bm4WrxPyLJaBfqoVMzJFtKeHXmXicBsZyehgD5FdiRR2XqNweHffj_B'];
+        
+            $header = [
+                'Authorization: Key=' . env('FCM_SERVER_KEY'),
+                'Content-Type: Application/json'
             ];
     
-            $payload = [
-                'registration_ids' 	=> $tokens,
-                'data'				=> $msg
-            ];
-    
-            $curl = curl_init();
-    
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => json_encode( $payload ),
-                CURLOPT_HTTPHEADER => $header
-            ));
-    
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-    
-            curl_close($curl);
-    
-            if ($err) {
-                echo "cURL Error #:" . $err;
-            } else {
-                echo $response;   
+            $produk = DB::select('SELECT * FROM `produk` WHERE stok<minimal');
+            $count = count($produk);
+            if($count>=1){
+                for($i = 0; $i < $count; $i++){
+                    // $res[] = ;
+                    $msg = [
+                        'title' => 'Peringatan!',
+                        'body' => $produk[$i]->nama.' hampir habis..',
+                        // 'icon' => 'img/icon.png',
+                        // 'image' => 'img/d.png',
+                    ];
+            
+                    $payload = [
+                        'registration_ids' 	=> $tokenId,
+                        'data'				=> $msg
+                    ];
+            
+                    $curl = curl_init();
+            
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_CUSTOMREQUEST => "POST",
+                        CURLOPT_POSTFIELDS => json_encode( $payload ),
+                        CURLOPT_HTTPHEADER => $header
+                    ));
+            
+                    $response = curl_exec($curl);
+                    $err = curl_error($curl);
+            
+                    curl_close($curl);
+            
+                    if ($err) {
+                        echo "cURL Error #:" . $err;
+                    } else {
+                        // echo $response;   
+                        echo "loading..";
+                    }
+                }
             }
         }
+        echo "loading..";
     }
     
     public function produkSortByHargaDesc(){
